@@ -1,0 +1,61 @@
+version: '3'
+services:
+
+  react:
+    build:
+      dockerfile: ./frontEnd/Dockerfile
+      context: .
+    container_name: react2
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/usr/scr/app
+
+  node:
+    build:
+      dockerfile: ./backend/Dockerfile
+      context: .
+    container_name: node2
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./:/usr/scr/app
+    networks:
+      - library
+    depends_on:
+      - mysql-db
+
+  mysql-phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadminLibrary2
+    ports:
+      - 8080:80
+    networks:
+      - library
+    depends_on:
+      - mysql-db
+    environment:
+      PMA_HOST: mysql-db
+      PMA_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - mysql:/var/lib/mysql
+
+  mysql-db:
+    image: mysql:5.7
+    container_name: mysqlLibrary2
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - library
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: products
+
+networks:
+  library:
+    driver: bridge
+
+volumes:
+  mysql:
