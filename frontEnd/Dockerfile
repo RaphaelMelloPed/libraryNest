@@ -6,6 +6,6 @@ COPY ./ package*.json
 
 WORKDIR /usr/scr/app/frontEnd
 
-EXPOSE 8000
+EXPOSE 8081
 
 CMD [ "npm","start" ]

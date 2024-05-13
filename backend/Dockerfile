@@ -6,8 +6,8 @@ COPY ./ package*.json
 
 RUN npm i -g nodemon
 
-WORKDIR /usr/scr/app/backEnd
+WORKDIR /usr/scr/app/backend
 
-EXPOSE 3000
+EXPOSE 3031
 
 CMD ["npm", "start","npm","test:watch"]
