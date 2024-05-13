@@ -15,9 +15,9 @@ services:
     build:
       dockerfile: ./backend/Dockerfile
       context: .
-    container_name: node2
+    container_name: nest
     ports:
-      - "3030:3030"
+      - "3000:3000"
     volumes:
       - ./:/usr/scr/app
     networks:
@@ -39,6 +39,7 @@ services:
       PMA_PORT: 3306
       MYSQL_USER: root
       MYSQL_PASSWORD: root
+      MYSQL_DATABASE: library
     volumes:
       - mysql:/var/lib/mysql
 
