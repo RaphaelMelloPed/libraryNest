@@ -1,1 +1,1 @@
-export class Author {}
+export class AuthorEntity {}

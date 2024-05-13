@@ -1,1 +1,1 @@
-export class Rent {}
+export class RentEntity {}
