@@ -1,5 +1,5 @@
-dotenv.config();
 import * as dotenv from 'dotenv';
+dotenv.config();
 import { DataSource } from 'typeorm';
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';

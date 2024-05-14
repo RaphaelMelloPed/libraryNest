@@ -24,22 +24,59 @@ export class CategoriesService {
     const newCategory = await this.categoriesRepository.create({ name });
 
     return await this.categoriesRepository.save(newCategory);
-    
   }
 
-  findAll() {
-    return `This action returns all categories`;
+  async findAll() {
+    const allCategories = await this.categoriesRepository.find();
+
+    if (!allCategories) {
+      throw new NotFoundException('There are no categories');
+    }
+
+    return allCategories;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number) {
+    const findCategory = await this.categoriesRepository.findOne({
+      where: { id },
+    });
+
+    if (!findCategory) {
+      throw new NotFoundException('Category not found!');
+    }
+
+    return findCategory;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, { name }: UpdateCategoryDto) {
+    const findCategory = await this.categoriesRepository.findOne({
+      where: { id },
+    });
+
+    if (!findCategory) {
+      throw new NotFoundException('Category not found!');
+    }
+
+    await this.categoriesRepository.update(id, { name });
+
+    const updateCategory = await this.categoriesRepository.findOne({
+      where: { id },
+    });
+
+    return updateCategory;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    const findCategory = await this.categoriesRepository.findOne({
+      where: { id },
+    });
+
+    if (!findCategory) {
+      throw new NotFoundException('Category not found!');
+    }
+
+    const deleteCategory = await this.categoriesRepository.delete({ id });
+
+    return deleteCategory;
   }
 }
