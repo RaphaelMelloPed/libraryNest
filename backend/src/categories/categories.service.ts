@@ -23,7 +23,7 @@ export class CategoriesService {
 
     const newCategory = await this.categoriesRepository.create({ name });
 
-    return await this.categoriesRepository.save(newCategory)
+    return await this.categoriesRepository.save(newCategory);
     
   }
 
