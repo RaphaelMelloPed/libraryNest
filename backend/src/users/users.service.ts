@@ -1,26 +1,89 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from './entities/user.entity';
+import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+const salts = 10;
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
+  ) {}
+
+  async create({ email, name, password, image }: CreateUserDto) {
+    const existingUser = await this.usersRepository.findOne({
+      where: { email: email },
+    });
+
+    if (existingUser) {
+      return 'User already exist';
+    }
+
+    password = await bcrypt.hash(password, salts);
+
+    const newUser = await this.usersRepository.create({
+      email,
+      name,
+      password,
+      image,
+    });
+
+    return await this.usersRepository.save(newUser);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const allUsers = await this.usersRepository.find();
+
+    if (!allUsers) {
+      throw new NotFoundException('We do not have any users yet');
+    }
+
+    return allUsers;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const findUser = await this.usersRepository.findOne({ where: { id } });
+
+    if (!findUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    return findUser;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, data: UpdateUserDto) {
+    const findUser = await this.usersRepository.findOne({ where: { id } });
+
+    if (!findUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    const hashedPassword = await bcrypt.hash(data.password, salts);
+
+    const updatedUserData = {
+      ...data,
+      password: hashedPassword,
+    };
+
+    await this.usersRepository.update(id, updatedUserData);
+
+    const updatedUser = await this.usersRepository.findOne({ where: { id } });
+    return updatedUser;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    const findUser = await this.usersRepository.findOne({ where: { id } });
+
+    if (!findUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    const deleteUser = await this.usersRepository.delete({ id });
+
+    return deleteUser;
   }
 }
