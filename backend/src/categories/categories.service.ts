@@ -4,7 +4,6 @@ import { CategoryEntity } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
-
 @Injectable()
 export class CategoriesService {
   constructor(
@@ -59,11 +58,11 @@ export class CategoriesService {
 
     await this.categoriesRepository.update(id, { name });
 
-    const updateCategory = await this.categoriesRepository.findOne({
+    const updatedCategory = await this.categoriesRepository.findOne({
       where: { id },
     });
 
-    return updateCategory;
+    return updatedCategory;
   }
 
   async remove(id: number) {
