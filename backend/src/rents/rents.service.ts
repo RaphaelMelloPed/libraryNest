@@ -16,8 +16,8 @@ export class RentsService {
   constructor(
     @InjectRepository(RentEntity)
     private rentRepository: Repository<RentEntity>,
-    private readonly BooksService: BooksService,
-    private readonly usersService: UsersService,
+    private readonly booksService: BooksService,
+    private readonly userService: UsersService
   ) {}
 
   async create({
@@ -26,8 +26,8 @@ export class RentsService {
     user_id,
     book_id,
   }: CreateRentDto) {
-    const book = await this.BooksService.findOne(book_id);
-    const user = await this.BooksService.findOne(user_id);
+    const book = await this.booksService.findOne(book_id);
+    const user = await this.booksService.findOne(user_id);
 
     if (!book) {
       throw new NotFoundException('Book not found');
@@ -42,7 +42,7 @@ export class RentsService {
     }
 
     book.quantity -= 1;
-    await this.BooksService.update(book_id, { quantity: book.quantity });
+    await this.booksService.update(book_id, { quantity: book.quantity });
 
     const newRent = this.rentRepository.create({
       pick_up_date,
@@ -113,7 +113,7 @@ export class RentsService {
 
     if (findRents.book.quantity > 0) {
       findRents.book.quantity += 1;
-      await this.BooksService.update(findRents.book.id, { quantity: findRents.book.quantity });
+      await this.booksService.update(findRents.book.id, { quantity: findRents.book.quantity });
 
     } else {
       throw new BadRequestException(`Book is not available for rent`);

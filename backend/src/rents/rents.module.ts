@@ -3,15 +3,15 @@ import { RentsService } from './rents.service';
 import { RentsController } from './rents.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RentEntity } from './entities/rent.entity';
-import { UserEntity } from 'src/users/entities/user.entity';
-import { BookEntity } from 'src/books/entities/book.entity';
+import { BooksModule } from 'src/books/books.module';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([RentEntity]),
-    UserEntity,
-    BookEntity
+  imports: [TypeOrmModule.forFeature([RentEntity]),
+    BooksModule,
+    UsersModule
   ],
+
   controllers: [RentsController],
   providers: [RentsService],
 })
