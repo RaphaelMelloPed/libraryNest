@@ -8,8 +8,8 @@ export class RentsController {
   constructor(private readonly rentsService: RentsService) {}
 
   @Post()
-  create(@Body() createRentDto: CreateRentDto) {
-    return this.rentsService.create(createRentDto);
+  create(@Body() {pick_up_date, returns_date, user_id, book_id}: CreateRentDto) {
+    return this.rentsService.create({pick_up_date, returns_date, user_id, book_id});
   }
 
   @Get()
@@ -23,8 +23,8 @@ export class RentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRentDto: UpdateRentDto) {
-    return this.rentsService.update(+id, updateRentDto);
+  update(@Param('id') id: string, @Body() data: UpdateRentDto) {
+    return this.rentsService.update(+id, data);
   }
 
   @Delete(':id')
