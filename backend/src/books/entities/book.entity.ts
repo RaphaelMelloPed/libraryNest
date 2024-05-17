@@ -38,11 +38,11 @@ export class BookEntity {
   })
   image: string;
 
-  @ManyToOne(() => CategoryEntity)
   @JoinColumn({ name: 'category_id' })
+  @ManyToOne(() => CategoryEntity)
   category: CategoryEntity;
 
-  @ManyToOne(() => AuthorEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'author_id' })
+  @ManyToOne(() => AuthorEntity, { onDelete: 'CASCADE' })
   author: AuthorEntity;
 }

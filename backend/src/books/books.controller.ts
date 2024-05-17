@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
@@ -29,8 +28,8 @@ export class BooksController {
     @Body() body: CreateBookDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const imgUrl = await this.cloudinaryService.uploadImage(file);
-    const book = await this.booksService.create({ ...body, image: imgUrl });
+    const imageUrl = await this.cloudinaryService.uploadImage(file);
+    const book = await this.booksService.create({ ...body, image: imageUrl });
     return book;
   }
 
@@ -45,7 +44,7 @@ export class BooksController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('img'))
+  @UseInterceptors(FileInterceptor('image'))
   async update(
     @Param('id') id: string,
     @Body() data: UpdateBookDto,
@@ -55,6 +54,7 @@ export class BooksController {
     if (file) {
       imageUrl = await this.cloudinaryService.uploadImage(file);
     }
+
     return this.booksService.update(+id, { ...data, image: imageUrl });
   }
 

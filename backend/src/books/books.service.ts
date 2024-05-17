@@ -50,7 +50,7 @@ export class BooksService {
       author,
       category,
     });
-
+    console.log(newBook)
     return await this.bookRepository.save(newBook);
   }
 
