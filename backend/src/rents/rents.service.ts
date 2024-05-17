@@ -27,7 +27,7 @@ export class RentsService {
     book_id,
   }: CreateRentDto) {
     const book = await this.booksService.findOne(book_id);
-    const user = await this.booksService.findOne(user_id);
+    const user = await this.userService.findOne(user_id);
 
     if (!book) {
       throw new NotFoundException('Book not found');
@@ -64,28 +64,12 @@ export class RentsService {
     return allRents;
   }
 
-  async findOneRent(id: number) {
-    const findRents = await this.rentRepository.findOne({where: {id}})
-
-
-    if (!findRents) {
-      throw new NotFoundException(`Rent not found`);
-    }
-
-    const oneAuthor = await this.rentRepository.find({
-      where: { id },
-      relations: ['book', 'user']
-    });
-
-    return oneAuthor;
-  }
-
   async findOne(id: number) {
     const allRents = await this.rentRepository.find({ relations: ['book', 'user'] })
     const rentsWithMatchingBookId = allRents.filter(rents => rents.user.id == id);
 
     if (rentsWithMatchingBookId.length == 0) {
-      throw new NotFoundException(`No reviews found for book with ID ${id}`);
+      throw new NotFoundException(`No rents found`);
     }
 
     return rentsWithMatchingBookId;

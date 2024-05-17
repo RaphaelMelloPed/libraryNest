@@ -3,11 +3,11 @@ import { IsInt, IsNotEmpty, IsDateString } from 'class-validator';
 export class CreateRentDto {
   @IsNotEmpty()
   @IsDateString()
-  pick_up_date: string;
+  pick_up_date: Date;
 
   @IsNotEmpty()
   @IsDateString()
-  returns_date: string;
+  returns_date: Date;
 
   @IsInt()
   @IsNotEmpty()

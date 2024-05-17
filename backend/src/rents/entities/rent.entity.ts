@@ -18,19 +18,19 @@ export class RentEntity {
     @Column({
         type: 'date'
     })
-    pick_up_date: string
+    pick_up_date: Date
 
     @Column({
         type: 'date'
     })
-    returns_date: string
+    returns_date: Date
 
-    @ManyToOne(() => UserEntity)
     @JoinColumn({ name: 'user_id' })
+    @ManyToOne(() => UserEntity)
     user: UserEntity
 
-    @ManyToOne(() => BookEntity, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'book_id' })
+    @ManyToOne(() => BookEntity, { onDelete: 'CASCADE' })
     book: BookEntity
 
 }

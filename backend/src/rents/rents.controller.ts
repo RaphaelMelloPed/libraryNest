@@ -9,6 +9,9 @@ export class RentsController {
 
   @Post()
   create(@Body() {pick_up_date, returns_date, user_id, book_id}: CreateRentDto) {
+    pick_up_date = new Date();
+    returns_date = new Date();
+    returns_date.setDate(pick_up_date.getDate() + 7);
     return this.rentsService.create({pick_up_date, returns_date, user_id, book_id});
   }
 
@@ -23,8 +26,11 @@ export class RentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() data: UpdateRentDto) {
-    return this.rentsService.update(+id, data);
+  update(@Param('id') id: string, @Body() {pick_up_date, returns_date, user_id, book_id}: UpdateRentDto) {
+    pick_up_date = new Date();
+    returns_date = new Date();
+    returns_date.setDate(pick_up_date.getDate() + 7);
+    return this.rentsService.update(+id, {returns_date, user_id, book_id});
   }
 
   @Delete(':id')
