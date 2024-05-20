@@ -204,9 +204,9 @@ export default function NewReview() {
               id={reviews.id}
               comment={reviews.comment}
               rating={reviews.rating}
-              id_books={reviews.id_books}
-              idReview={reviews.id}
-              id_user={reviews.id_user}
+              book_id={reviews.book_id}
+              review_id={reviews.id}
+              user_id={reviews.user_id}
             />
           ))}
 

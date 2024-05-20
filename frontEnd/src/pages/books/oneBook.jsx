@@ -17,6 +17,7 @@ export default function OneBook() {
     id_books: "",
     id_user: ""
   });
+  
 
   const handleDelete = async () => {
     try {
@@ -33,7 +34,7 @@ export default function OneBook() {
     const fetchBooks = async () => {
       try {
         const response = await findBooks(id);
-        setBook(response[0]);
+        setBook(response);
         setRent((prevRent) => ({
           ...prevRent,
           id_books: id
@@ -64,8 +65,8 @@ export default function OneBook() {
     try {
       const rentData = {
       ...rent,
-        id_books: parseInt(rent.id_books),
-        id_user: parseInt(rent.id_user),
+        id_books: parseInt(rent.book_id),
+        id_user: parseInt(rent.user_id),
       };
   
       await newRents(rentData);
@@ -115,12 +116,12 @@ export default function OneBook() {
               <img
                 className="rounded-t-lg"
                 src={book.image}
-                alt={book.full_name}
+                alt={book.name}
               />
             </div>
             <div className="p-5">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
-                {book.full_name}
+                {book.name}
               </h5>
               <h5 className="text-white">Description:</h5>
               <p className="mb-3 font-normal text-white">{book.description}</p>

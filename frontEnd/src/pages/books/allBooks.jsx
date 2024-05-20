@@ -15,12 +15,10 @@ export default function AllBooks() {
       try {
         const response = await viewBooks();
         if (
-          response &&
-          response.viewBooks &&
-          Array.isArray(response.viewBooks)
+          response
         ) {
-          const booksArray = response.viewBooks;
-          setBooks(response.viewBooks);
+          const booksArray = response;
+          setBooks(response);
           setTotalPages(Math.ceil(booksArray.length / 12));
         } else {
           console.error("Error: Invalid data format received");
@@ -69,7 +67,7 @@ export default function AllBooks() {
           <ViewBooksComponents
             key={book.id}
             id={book.id}
-            full_name={book.full_name}
+            full_name={book.name}
             quantity={book.quantity}
             image={book.image}
           />

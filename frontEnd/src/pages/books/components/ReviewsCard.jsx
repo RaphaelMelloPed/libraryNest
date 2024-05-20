@@ -4,7 +4,7 @@ import { allUsers, findUser } from "../../../../requests_api/users";
 import DeleteButton from "../../../components/Buttons/DeleteButton";
 import { allReviews, deleteReviews } from "../../../../requests_api/reviews";
 
-export default function Review({ comment, rating, id, id_books, id_user }) {
+export default function Review({ comment, rating, id, book_id, user_id }) {
   const adminData = localStorage.getItem("user");
   const adminObject = JSON.parse(adminData);
   const [users, setUsers] = useState([]);
@@ -14,9 +14,9 @@ export default function Review({ comment, rating, id, id_books, id_user }) {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await allUsers(id_user);
+        const response = await allUsers(user_id);
         const filteredUsers = response.viewUsers.filter(
-          (user) => user.id == id_user
+          (user) => user.id == user_id
         );
         setUsers(filteredUsers);
       } catch (error) {
@@ -29,7 +29,7 @@ export default function Review({ comment, rating, id, id_books, id_user }) {
 
   const handleDelete = async () => {
     try {
-      await deleteReviews(id, id_books);
+      await deleteReviews(id, book_id);
       notifySuccess()
     } catch (error) {
       notifyFail(error.message)
@@ -106,7 +106,7 @@ export default function Review({ comment, rating, id, id_books, id_user }) {
                 />
                 <div className="font-medium dark:text-white">
                   <p className="text-black">
-                    {user.full_name}
+                    {user.name}
                     <time
                       dateTime="2014-08-16 19:00"
                       className="block text-sm text-gray-500 dark:text-gray-400"
