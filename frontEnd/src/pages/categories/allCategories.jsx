@@ -15,12 +15,10 @@ export default function AllCategories() {
       try {
         const response = await viewCategories();
         if (
-          response &&
-          response.viewCategories &&
-          Array.isArray(response.viewCategories)
+          response
         ) {
-          const categoriesArray = response.viewCategories;
-          setCategories(response.viewCategories);
+          const categoriesArray = response;
+          setCategories(response);
           setTotalPages(Math.ceil(categoriesArray.length / 12));
         } else {
           console.error("Error: Invalid data format received");

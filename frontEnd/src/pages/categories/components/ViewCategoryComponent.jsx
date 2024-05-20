@@ -13,7 +13,7 @@ export default function ViewCategoryComponent({ id, name }) {
       notifySuccess();
     } catch (error) {
       console.error("Error deleting category:", error);
-      notifyFail('Something went wrong!');
+      notifyFail("Something went wrong!");
     }
   };
 
@@ -28,7 +28,7 @@ export default function ViewCategoryComponent({ id, name }) {
   }, []);
 
   const notifySuccess = () => {
-    toast.success('Success!', {
+    toast.success("Success!", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -37,12 +37,12 @@ export default function ViewCategoryComponent({ id, name }) {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      onClose: () => window.location.reload()
-      });
+      onClose: () => window.location.reload(),
+    });
   };
 
   const notifyFail = () => {
-    toast.error('Something went wrong!', {
+    toast.error("Something went wrong!", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -51,8 +51,8 @@ export default function ViewCategoryComponent({ id, name }) {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      onClose: () => window.location.reload()
-      });
+      onClose: () => window.location.reload(),
+    });
   };
 
   return (
@@ -62,7 +62,9 @@ export default function ViewCategoryComponent({ id, name }) {
         style={{ width: "15rem" }}
       >
         <div className="p-5">
-          <h5 className="mb-2 text-1xl tracking-tight text-white">{name}</h5>
+          <h5 className="flex justify-center mb-2 text-1xl tracking-tight text-white">
+            {name}
+          </h5>
           {userData.admin === "1" && (
             <div className="flex justify-center pt-5">
               <DeleteButton deleteFunction={handleDelete} />
