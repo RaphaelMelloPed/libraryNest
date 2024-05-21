@@ -44,11 +44,10 @@ const LoginUser = () => {
             const data = response;
             setIsSubmitting(true);
             formData
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.accessToken);
             localStorage.setItem('user', JSON.stringify(data));
-            console.log(data)
 
-            config.headers['Authorization'] = `Bearer ${data.token}`;
+            config.headers['Authorization'] = `Bearer ${data.accessToken}`;
 
             notifySuccess();
             navigate('/')
