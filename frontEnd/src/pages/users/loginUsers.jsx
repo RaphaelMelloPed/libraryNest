@@ -45,7 +45,8 @@ const LoginUser = () => {
             setIsSubmitting(true);
             formData
             localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.dateUser[0]));
+            localStorage.setItem('user', JSON.stringify(data));
+            console.log(data)
 
             config.headers['Authorization'] = `Bearer ${data.token}`;
 
