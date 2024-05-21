@@ -134,7 +134,7 @@ export default function OneBook() {
               )}
               </div>
               <div>
-              {userData.admin === "1" && (
+              {userData.admin == "1" && (
                 <div className="flex justify-center pt-3">
                   <EditButtonModal link="/books/update/" id={id} />
                   <DeleteButton deleteFunction={handleDelete} />

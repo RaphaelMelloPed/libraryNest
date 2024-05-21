@@ -128,7 +128,7 @@ export default function Review({ comment, rating, id, book_id, user_id }) {
           {comment}
         </p>
         <div className="flex justify-end">
-          {(adminObject.admin === "1" || isCommentAuthor) && (
+          {(adminObject.admin == "1" || isCommentAuthor) && (
             <DeleteButton deleteFunction={handleDelete} />
           )}
         </div>

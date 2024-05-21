@@ -23,8 +23,9 @@ export const findUser = async (id) => {
 };
 
 export const newUsers = async (formDataObject) => {
+  console.log(formDataObject)
   try {
-    const response = await fetchApi.post(`/users/new`, formDataObject);
+    const response = await fetchApi.post(`/users/`, formDataObject);
     return response.data;
   } catch (error) {
     throw error;

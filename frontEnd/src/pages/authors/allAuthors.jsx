@@ -47,7 +47,7 @@ export default function AllAuthors() {
 
   return (
     <>
-      {userData.admin === "1" && (
+      {userData.admin == "1" && (
         <div className="flex justify-center pt-5">
           <NewAuthorModal />
         </div>

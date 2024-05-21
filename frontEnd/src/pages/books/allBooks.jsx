@@ -47,7 +47,7 @@ export default function AllBooks() {
 
   return (
     <>
-      {userData.admin === "1" && (
+      {userData.admin == "1" && (
         <div className="flex justify-center p-5">
           <NewBookModal />
         </div>

@@ -50,7 +50,7 @@ export default function AllCategories() {
 
   return (
     <>
-      {userData.admin === "1" && (
+      {userData.admin == "1" && (
         <div className="flex justify-center pt-5">
           <NewCategoryModal />
         </div>

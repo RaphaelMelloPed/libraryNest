@@ -16,13 +16,9 @@ const Register = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [formData, setFormData] = useState({
     email: "",
-    full_name: "",
+    name: "",
     password: "",
     passwordConfirm: "",
-    cpf: "",
-    full_address: "",
-    additional_address_details: "",
-    phone: "",
   });
 
   const handleChange = (e) => {
@@ -55,15 +51,7 @@ const Register = () => {
       setIsSubmitting(true);
       const formDataObject = new FormData();
       formDataObject.append("email", formData.email);
-      formDataObject.append("full_name", formData.full_name);
-      formDataObject.append("cpf", formData.cpf);
-      formDataObject.append("full_address", formData.full_address);
-      formDataObject.append(
-        "additional_address_details",
-        formData.additional_address_details
-      );
-      formDataObject.append("phone", formData.phone);
-
+      formDataObject.append("name", formData.name);
       if (formData.password !== formData.passwordConfirm) {
         return notifyFail("Password is not the same");
       }
@@ -145,14 +133,14 @@ const Register = () => {
 
             <div className="mb-6">
               <label
-                htmlFor="full_name"
+                htmlFor="name"
                 className="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Your name
               </label>
               <input
                 type="text"
-                id="full_name"
+                id="name"
                 className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="John Falcon"
                 required
@@ -239,7 +227,7 @@ const Register = () => {
                 </p>
               ) : (
                 <p className="text-green-500 p-2">
-                  Password must contain 5 character
+                  Password must contain 8 character
                 </p>
               )}
               {containsNumber(formData.password) < 2 ? (
@@ -251,73 +239,6 @@ const Register = () => {
                   Password contains at least 2 numbers
                 </p>
               )}
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="cpf"
-                className="block mb-2 text-sm font-medium text-white dark:text-white"
-              >
-                CPF
-              </label>
-              <InputMask
-                mask="999.999.999-99"
-                id="cpf"
-                className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="xxx.xxx.xxx-xx"
-                required
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="full_address"
-                className="block mb-2 text-sm font-medium text-white dark:text-white"
-              >
-                Address
-              </label>
-              <input
-                type="text"
-                id="full_address"
-                className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Lombard street"
-                required
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="additional_address_details"
-                className="block mb-2 text-sm font-medium text-white dark:text-white"
-              >
-                Additional address details
-              </label>
-              <input
-                type="text"
-                id="additional_address_details"
-                className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Number 7, apartament 81"
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="phone"
-                className="block mb-2 text-sm font-medium text-white dark:text-white"
-              >
-                Phone number
-              </label>
-              <InputMask
-                mask="(99)99999-9999"
-                id="phone"
-                className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="(xx)xxxxx-xxxx"
-                required
-                onChange={handleChange}
-              />
             </div>
 
             <div className="">

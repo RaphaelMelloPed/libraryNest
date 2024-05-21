@@ -65,7 +65,7 @@ export default function ViewCategoryComponent({ id, name }) {
           <h5 className="flex justify-center mb-2 text-1xl tracking-tight text-white">
             {name}
           </h5>
-          {userData.admin === "1" && (
+          {userData.admin == "1" && (
             <div className="flex justify-center pt-5">
               <DeleteButton deleteFunction={handleDelete} />
               <EditButtonModal link="/categories/update/" id={id} />
