@@ -97,7 +97,7 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {userData.id && (
+                {userData && (
                   <>
                     <button
                       onClick={() => logout()}
@@ -118,7 +118,7 @@ export default function Navbar() {
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-8 w-8 rounded-full"
-                            src={userData.image}
+                            src={parsedUserData.user.image}
                             alt=""
                           />
                         </Link>
