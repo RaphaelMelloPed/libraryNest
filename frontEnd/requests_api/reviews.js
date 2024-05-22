@@ -18,9 +18,9 @@ export const newReviews = async (id, formData) => {
   }
 };
 
-export const deleteReviews = async (id, id_books) => {
+export const deleteReviews = async (id) => {
   try {
-    const response = await fetchApi.delete(`/reviews/${id_books}/${id}`);
+    const response = await fetchApi.delete(`/reviews/${id}`);
     return response.data;
   } catch (error) {
     throw error;

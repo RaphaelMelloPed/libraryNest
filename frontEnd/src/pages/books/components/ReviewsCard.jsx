@@ -36,7 +36,7 @@ export default function Review({ comment, rating, id, book_id, user_id }) {
     }
   };
 
-  const isCommentAuthor = users.some((user) => user.id === adminObject.id);
+  const isCommentAuthor = users.some((user) => user.id === adminObject.user.id);
 
   const Stars = ({ rating }) => {
     const stars = [];
@@ -127,7 +127,7 @@ export default function Review({ comment, rating, id, book_id, user_id }) {
           {comment}
         </p>
         <div className="flex justify-end">
-          {(adminObject.admin == "1" || isCommentAuthor) && (
+          {(adminObject.user.admin == "1" || isCommentAuthor) && (
             <DeleteButton deleteFunction={handleDelete} />
           )}
         </div>
