@@ -23,11 +23,10 @@ export default function Navbar() {
 
   useEffect(() => {
     if (userDataFromStorage) {
-      setUserData(parsedUserData);
+      setUserData(parsedUserData.user);
     }
   }, []);
-
-  console.log(userDataFromStorage)
+  
   function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
