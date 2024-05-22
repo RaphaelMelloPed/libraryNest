@@ -14,8 +14,8 @@ export default function OneBook() {
   const [book, setBook] = useState({});
   const navigate = useNavigate();
   const [rent, setRent] = useState({
-    id_books: "",
-    id_user: ""
+    book_id: "",
+    user_id: ""
   });
   
 
@@ -37,7 +37,7 @@ export default function OneBook() {
         setBook(response);
         setRent((prevRent) => ({
           ...prevRent,
-          id_books: id
+          book_id: id
         }))
       } catch (error) {
         console.error("Error searching for book:", error);
@@ -48,25 +48,26 @@ export default function OneBook() {
   }, [id]);
 
   const [userData, setUserData] = useState("");
+  const userDataFromStorage = localStorage.getItem("user");
+  const parsedUserData = JSON.parse(userDataFromStorage).user;
 
   useEffect(() => {
-    const userDataFromStorage = localStorage.getItem("user");
     if (userDataFromStorage) {
-      const parsedUserData = JSON.parse(userDataFromStorage);
       setUserData(parsedUserData);
       setRent((prevRent) => ({
         ...prevRent,
-        id_user: parsedUserData.id
+        user_id: parsedUserData.id
       }));
     }
   }, []);
+
 
   const handleRent = async () => {
     try {
       const rentData = {
       ...rent,
-        id_books: parseInt(rent.book_id),
-        id_user: parseInt(rent.user_id),
+        book_id: parseInt(rent.book_id),
+        user_id: parseInt(rent.user_id),
       };
   
       await newRents(rentData);
@@ -134,7 +135,7 @@ export default function OneBook() {
               )}
               </div>
               <div>
-              {userData.admin == "1" && (
+              {parsedUserData.admin == "1" && (
                 <div className="flex justify-center pt-3">
                   <EditButtonModal link="/books/update/" id={id} />
                   <DeleteButton deleteFunction={handleDelete} />

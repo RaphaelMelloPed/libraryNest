@@ -20,7 +20,7 @@ export const findRents = async (id) => {
 
 export const newRents = async (rentData) => {
   try {
-    const response = await fetchApi.post(`/rents/new`, rentData);
+    const response = await fetchApi.post(`/rents/`, rentData);
     return response.data;
   } catch (error) {
     throw error;
@@ -29,7 +29,7 @@ export const newRents = async (rentData) => {
 
 export const updateRents = async (id, rents, renewed) => {
   try {
-    const response = await fetchApi.patch(`/rents/update/${id}`, rents, renewed);
+    const response = await fetchApi.patch(`/rents/${id}`, rents, renewed);
     return response.data;
   } catch (error) {
     throw error;

@@ -9,8 +9,8 @@ import EditButtonModal from "../../../components/Buttons/EditButton";
 export default function RentsList({
   pick_up_date,
   returns_date,
-  id_user,
-  id_books,
+  user_id,
+  book_id,
   id,
 }) {
   const adminData = localStorage.getItem("user");
@@ -63,11 +63,11 @@ export default function RentsList({
             scope="row"
             className="px-6 py-4 font-medium text-white "
           >
-            {id_user}
+            {user_id}
           </th>
           <td className="px-6 py-4">{pick_up_date}</td>
           <td className="px-6 py-4">{returns_date}</td>
-          <td className="px-6 py-4">{id_books}</td>
+          <td className="px-6 py-4">{book_id}</td>
           <td className="px-6 py-4">
           <DeleteButton deleteFunction={handleDelete} />
           <EditButtonModal link="/rents/update/" id={id} />

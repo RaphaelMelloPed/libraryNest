@@ -42,6 +42,8 @@ export default function allRentsAdmin() {
     fetchRents();
   }, []);
 
+  console.log(rents)
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -76,6 +78,7 @@ export default function allRentsAdmin() {
   const indexOfLastRent = currentPage * 5;
   const indexOfFirstRent = indexOfLastRent - 5;
   const currentRents = rents.slice(indexOfFirstRent, indexOfLastRent);
+
   return (
     <>
       {userData && userData.admin == 1 ? (
@@ -101,13 +104,13 @@ export default function allRentsAdmin() {
                         key={rent.id}
                         pick_up_date={formatDateTime(rent.pick_up_date)}
                         returns_date={formatDateTime(rent.returns_date)}
-                        id_user={
-                          user.find((user) => user.id === rent.id_user)
-                            ?.full_name || "N/A"
+                        user_id={
+                          user.find((user) => user.id === rent.user_id)
+                            ?.name || "N/A"
                         }
-                        id_books={
-                          books.find((book) => book.id === rent.id_books)
-                            ?.full_name || "N/A"
+                        book_id={
+                          books.find((book) => book.id === rent.book_id)
+                            ?.name || "N/A"
                         }
                         id={rent.id}
                       />
