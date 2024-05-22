@@ -10,12 +10,11 @@ export default function Review({ comment, rating, id, book_id, user_id }) {
   const [users, setUsers] = useState([]);
   const [reviews, setReviews] = useState([])
 
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await allUsers(user_id);
-        const filteredUsers = response.viewUsers.filter(
+        const filteredUsers = response.filter(
           (user) => user.id == user_id
         );
         setUsers(filteredUsers);

@@ -11,7 +11,7 @@ export const allReviews = async (id_books) => {
 
 export const newReviews = async (id, formData) => {
   try {
-    const response = await fetchApi.post(`/reviews/${id}`, formData);
+    const response = await fetchApi.post(`/reviews/`, formData);
     return response.data;
   } catch (error) {
     throw error;

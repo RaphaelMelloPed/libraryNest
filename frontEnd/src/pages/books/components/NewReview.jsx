@@ -21,8 +21,8 @@ export default function NewReview() {
   const [formData, setFormData] = useState({
     comment: "",
     rating: "1",
-    id_user: isLoggedIn ? JSON.parse(localStorage.getItem("user")).id : null,
-    id_books: id,
+    user_id: isLoggedIn ? JSON.parse(localStorage.getItem("user")).user.id : null,
+    book_id: id,
   });
 
   const reloadPage = () => {
@@ -81,7 +81,6 @@ export default function NewReview() {
   const indexOfLastAuthor = currentPage * 3;
   const indexOfFirstAuthor = indexOfLastAuthor - 3;
   const currentReview = review.slice(indexOfFirstAuthor, indexOfLastAuthor);
-
   return (
     <div className="flex justify-center mt-5">
       <div className="w-full p-5">
@@ -204,9 +203,9 @@ export default function NewReview() {
               id={reviews.id}
               comment={reviews.comment}
               rating={reviews.rating}
-              book_id={reviews.book_id}
+              book_id={reviews.book.id}
               review_id={reviews.id}
-              user_id={reviews.user_id}
+              user_id={reviews.user.id}
             />
           ))}
 

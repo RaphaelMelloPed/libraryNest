@@ -9,11 +9,17 @@ import { viewBooks } from "../../../requests_api/books";
 export default function allRentsAdmin() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const User = localStorage.getItem("user");
   const [books, setBooks] = useState([]);
   const [rents, setRents] = useState([]);
   const [user, setUser] = useState([]);
-  const userData = JSON.parse(User);
+  const [userData, setUserData] = useState("");
+  const userDataFromStorage = localStorage.getItem("user");
+  const parsedUserData = JSON.parse(userDataFromStorage);
+  useEffect(() => {
+    if (userDataFromStorage) {
+      setUserData(parsedUserData.user);
+    }
+  }, []);
 
   const onPageChange = (page) => setCurrentPage(page);
 
@@ -21,12 +27,8 @@ export default function allRentsAdmin() {
     const fetchRents = async () => {
       try {
         const response = await allRents();
-        if (
-          response &&
-          response.viewRents &&
-          Array.isArray(response.viewRents)
-        ) {
-          const rentsArray = response.viewRents;
+        if (response) {
+          const rentsArray = response;
           setRents(rentsArray);
           setTotalPages(Math.ceil(rentsArray.length / 5));
         } else {
@@ -44,7 +46,7 @@ export default function allRentsAdmin() {
     const fetchUser = async () => {
       try {
         const response = await allUsers();
-        setUser(response.viewUsers);
+        setUser(response);
       } catch (error) {
         console.error("Erro search users:", error);
       }
@@ -57,7 +59,7 @@ export default function allRentsAdmin() {
     const fetchBooks = async () => {
       try {
         const response = await viewBooks();
-        setBooks(response.viewBooks);
+        setBooks(response);
       } catch (error) {
         console.error("Erro search book:", error);
       }
