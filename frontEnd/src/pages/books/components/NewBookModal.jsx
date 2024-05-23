@@ -153,8 +153,6 @@ export default function modal() {
       });
   };
 
-  console.log(imageUrl)
-
   return (
     <div>
       <button

@@ -13,12 +13,12 @@ export default function EditBooks() {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [formData, setFormData] = useState({
-    full_name: "",
+    name: "",
     description: "",
     quantity: "",
     image: "",
-    id_authors: "",
-    id_categories: "",
+    author_id: "",
+    category_id: "",
   });
 
   const handleChange = (e) => {
@@ -35,7 +35,7 @@ export default function EditBooks() {
   };
 
   const handleFileChange = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files;
     if (file) {
       setImageUrl(file);
     }
@@ -48,11 +48,9 @@ export default function EditBooks() {
       try {
         const response = await viewCategories();
         if (
-          response &&
-          response.viewCategories &&
-          Array.isArray(response.viewCategories)
+          response
         ) {
-          setCategories(response.viewCategories);
+          setCategories(response);
         } else {
           console.error("Error: Invalid data format received");
         }
@@ -69,11 +67,9 @@ export default function EditBooks() {
       try {
         const response = await viewAuthors();
         if (
-          response &&
-          response.viewAuthors &&
-          Array.isArray(response.viewAuthors)
+          response
         ) {
-          setAuthors(response.viewAuthors);
+          setAuthors(response);
         } else {
           console.error("Error: Invalid data format received");
         }
@@ -89,7 +85,7 @@ export default function EditBooks() {
     const fetchBooks = async () => {
       try {
         const response = await findBooks(id);
-        setFormData(response[0]);
+        setFormData(response);
       } catch (error) {
         console.error("Error fetching books:", error);
       }
@@ -104,12 +100,12 @@ export default function EditBooks() {
     try {
       setIsSubmitting(true);
       const formDataObject = new FormData();
-      formDataObject.append("full_name", formData.full_name);
+      formDataObject.append("name", formData.name);
       formDataObject.append("quantity", formData.quantity);
       formDataObject.append("description", formData.description);
       formDataObject.append("image", imageUrl);
-      formDataObject.append("id_authors", formData.id_authors);
-      formDataObject.append("id_categories", formData.id_categories);
+      formDataObject.append("author_id", formData.author.id);
+      formDataObject.append("category_id", formData.category.id);
 
       await updateBook(id, formDataObject);
       notifySuccess();
@@ -170,17 +166,17 @@ export default function EditBooks() {
           <h5 className="text-xl font-medium text-white">Edit Book</h5>
           <div className="mb-6">
             <label
-              htmlFor="full_name"
+              htmlFor="name"
               className="block mb-2 text-sm font-medium text-white"
             >
               Edit Name
             </label>
             <input
               type="text"
-              id="full_name"
-              name="full_name"
+              id="name"
+              name="name"
               onChange={handleChange}
-              value={formData.full_name}
+              value={formData.name}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="The hobbit"
               required
@@ -239,24 +235,24 @@ export default function EditBooks() {
 
           <div className="col-span-2">
             <label
-              htmlFor="id_authors"
+              htmlFor="author_id"
               className="block mb-2 text-sm font-medium text-white"
               value="Select the Author"
             />
             <div>
               <select
                 className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                id="id_authors"
+                id="author_id"
                 required
                 onChange={handleChange}
-                value={formData.id_authors}
+                value={formData.author_id}
               >
                 <option value="" disabled>
                   Author
                 </option>
                 {authors.map((author) => (
                   <option key={author.id} value={author.id}>
-                    {author.full_name}
+                    {author.name}
                   </option>
                 ))}
               </select>
@@ -264,17 +260,17 @@ export default function EditBooks() {
           </div>
           <div className="col-span-2">
             <label
-              htmlFor="id_categories"
+              htmlFor="category_id"
               className="block mb-2 text-sm font-medium text-white"
               value="Select the Author"
             />
             <div>
               <select
                 className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                id="id_categories"
+                id="category_id"
                 required
                 onChange={handleChange}
-                value={formData.id_categories}
+                value={formData.category_id}
               >
                 <option value="" disabled>
                   Category

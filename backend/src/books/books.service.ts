@@ -4,7 +4,7 @@ import { BookEntity } from './entities/book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { AuthorsService } from 'src/authors/authors.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CategoriesService } from 'src/categories/categories.service';
 
 @Injectable()
@@ -16,81 +16,93 @@ export class BooksService {
     private readonly authorService: AuthorsService,
   ) {}
 
-  async create({
-    name,
-    description,
-    quantity,
-    image,
-    category_id,
-    author_id,
-  }: CreateBookDto) {
-    const existingBook = await this.bookRepository.findOne({
-      where: { name: name },
-    });
+  async create({ name, description, quantity, image, category_id, author_id }: CreateBookDto) {
+    const existingBook = await this.bookRepository.findOne({ where: { name } });
 
     if (existingBook) {
-      return 'This book already exist';
+      throw new BadRequestException('This book already exists');
     }
 
-    await this.authorService.findOne(author_id);
-    
-    await this.categoryService.findOne(category_id);
-    
+    const author = await this.authorService.findOne(author_id);
+    if (!author) {
+      throw new NotFoundException('Author not found');
+    }
+
+    const category = await this.categoryService.findOne(category_id);
+    if (!category) {
+      throw new NotFoundException('Category not found');
+    }
+
     const newBook = this.bookRepository.create({
       name,
       description,
       quantity,
       image,
-      author: {id: author_id},
-      category: {id: category_id},
+      author,
+      category,
     });
+
     return await this.bookRepository.save(newBook);
   }
 
   async findAll() {
-    const allBooks = await this.bookRepository.find({ relations: ['category', 'author'] })
+    const allBooks = await this.bookRepository.find({ relations: ['category', 'author'] });
 
-    if(!allBooks){
-      throw new NotFoundException('No books found')
+    if (!allBooks || allBooks.length === 0) {
+      throw new NotFoundException('No books found');
     }
 
     return allBooks;
   }
 
   async findOne(id: number) {
+    const book = await this.bookRepository.findOne({ where: { id }, relations: ['category', 'author'] });
 
-    const findBook = await this.bookRepository.findOne({ where: { id } });
-
-    if (!findBook) {
+    if (!book) {
       throw new NotFoundException('Book not found');
     }
 
-    const oneBook = await this.bookRepository.findOne({ where: { id }, relations: ['category', 'author'] })
-
-    return oneBook;
+    return book;
   }
 
   async update(id: number, data: UpdateBookDto) {
-    const findBook = await this.bookRepository.findOne({ where: { id } });
+    const book = await this.bookRepository.findOne({ where: { id }, relations: ['category', 'author'] });
 
-    if (!findBook) {
+    if (!book) {
       throw new NotFoundException('Book not found');
     }
 
-    const updateBook = await this.bookRepository.update(id, data);
+    if (data.author_id) {
+      const author = await this.authorService.findOne(data.author_id);
+      if (!author) {
+        throw new NotFoundException('Author not found');
+      }
+      book.author = author;
+    }
 
-    return updateBook;
+    if (data.category_id) {
+      const category = await this.categoryService.findOne(data.category_id);
+      if (!category) {
+        throw new NotFoundException('Category not found');
+      }
+      book.category = category;
+    }
+
+    Object.assign(book, data);
+    await this.bookRepository.save(book);
+
+    return book;
   }
 
   async remove(id: number) {
-    const findBook = await this.bookRepository.findOne({ where: { id } });
+    const book = await this.bookRepository.findOne({ where: { id } });
 
-    if (!findBook) {
+    if (!book) {
       throw new NotFoundException('Book not found');
     }
 
-    const deleteBook = await this.bookRepository.delete({ id });
+    await this.bookRepository.delete(id);
 
-    return deleteBook;
+    return { message: 'Book successfully deleted' };
   }
 }
