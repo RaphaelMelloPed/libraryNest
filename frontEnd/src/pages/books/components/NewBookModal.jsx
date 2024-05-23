@@ -19,12 +19,12 @@ export default function modal() {
   const [authors, setAuthors] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
   const [formData, setFormData] = useState({
-    full_name: "",
+    name: "",
     description: "",
     quantity: "",
     image: "",
-    id_authors: "",
-    id_categories: "",
+    author_id: "",
+    category_id: "",
   });
 
   const handleChange = (e) => {
@@ -53,11 +53,9 @@ export default function modal() {
       try {
         const response = await viewCategories();
         if (
-          response &&
-          response.viewCategories &&
-          Array.isArray(response.viewCategories)
+          response
         ) {
-          setCategories(response.viewCategories);
+          setCategories(response);
         } else {
           console.error("Error: Invalid data format received");
         }
@@ -74,11 +72,9 @@ export default function modal() {
       try {
         const response = await viewAuthors();
         if (
-          response &&
-          response.viewAuthors &&
-          Array.isArray(response.viewAuthors)
+          response
         ) {
-          setAuthors(response.viewAuthors);
+          setAuthors(response);
         } else {
           console.error("Error: Invalid data format received");
         }
@@ -100,12 +96,12 @@ export default function modal() {
     try {
         setIsSubmitting(true);
         const formDataObject = new FormData();
-        formDataObject.append('full_name', formData.full_name);
+        formDataObject.append('name', formData.name);
         formDataObject.append('quantity', formData.quantity);
         formDataObject.append('description', formData.description);
         formDataObject.append('image', imageUrl);
-        formDataObject.append('id_authors', formData.id_authors);
-        formDataObject.append('id_categories', formData.id_categories);
+        formDataObject.append('author_id', formData.author_id);
+        formDataObject.append('category_id', formData.category_id);
 
         await newBook(formDataObject);
 
@@ -185,14 +181,14 @@ export default function modal() {
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="full_name"
+                    htmlFor="name"
                     className="block mb-2 text-sm font-medium text-white"
                   >
                     Name
                   </label>
                   <input
                     type="text"
-                    id="full_name"
+                    id="name"
                     onChange={handleChange}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="The hobbit"
@@ -247,24 +243,24 @@ export default function modal() {
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="id_authors"
+                    htmlFor="author_id"
                     className="block mb-2 text-sm font-medium text-white"
                     value="Select the Author"
                   />
                   <div>
                     <select
                       className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      id="id_authors"
+                      id="author_id"
                       required
                       onChange={handleChange}
-                      value={formData.id_authors}
+                      value={formData.author_id}
                     >
                       <option value="" disabled>
                         Author
                       </option>
                       {authors.map((author) => (
                         <option key={author.id} value={author.id}>
-                          {author.full_name}
+                          {author.name}
                         </option>
                       ))}
                     </select>
@@ -272,17 +268,17 @@ export default function modal() {
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="id_categories"
+                    htmlFor="category_id"
                     className="block mb-2 text-sm font-medium text-white"
                     value="Select the Author"
                   />
                   <div>
                     <select
                       className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      id="id_categories"
+                      id="category_id"
                       required
                       onChange={handleChange}
-                      value={formData.id_categories}
+                      value={formData.category_id}
                     >
                       <option value="" disabled>
                         Category
