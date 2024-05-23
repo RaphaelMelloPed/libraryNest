@@ -22,8 +22,11 @@ export default function EditBooks() {
   });
 
   const handleChange = (e) => {
-    if (e.target.id === "quantity" && (isNaN(e.target.value) || parseInt(e.target.value) < 1)) {
-      notifyFailQuantity("Quantity need to be a valid number")
+    if (
+      e.target.id === "quantity" &&
+      (isNaN(e.target.value) || parseInt(e.target.value) < 1)
+    ) {
+      notifyFailQuantity("Quantity need to be a valid number");
       setIsButtonDisabled(true);
       return;
     }
@@ -47,9 +50,7 @@ export default function EditBooks() {
     const fetchCategories = async () => {
       try {
         const response = await viewCategories();
-        if (
-          response
-        ) {
+        if (response) {
           setCategories(response);
         } else {
           console.error("Error: Invalid data format received");
@@ -66,9 +67,7 @@ export default function EditBooks() {
     const fetchAuthors = async () => {
       try {
         const response = await viewAuthors();
-        if (
-          response
-        ) {
+        if (response) {
           setAuthors(response);
         } else {
           console.error("Error: Invalid data format received");
@@ -100,12 +99,15 @@ export default function EditBooks() {
     try {
       setIsSubmitting(true);
       const formDataObject = new FormData();
-      formDataObject.append("name", formData.name);
-      formDataObject.append("quantity", formData.quantity);
-      formDataObject.append("description", formData.description);
-      formDataObject.append("image", imageUrl);
-      formDataObject.append("author_id", formData.author.id);
-      formDataObject.append("category_id", formData.category.id);
+      formDataObject.append("name", books.name);
+      formDataObject.append(
+        "quantity",
+        parseInt(books.quantity)
+      );
+      formDataObject.append("description", books.description);
+      formDataObject.append("img", imageUrl);
+      formDataObject.append("author", parseInt(books.author.id));
+      formDataObject.append("category", parseInt(books.category.id));
 
       await updateBook(id, formDataObject);
       notifySuccess();
@@ -116,7 +118,7 @@ export default function EditBooks() {
   };
 
   const notifySuccess = () => {
-    toast.success('Success!', {
+    toast.success("Success!", {
       position: "bottom-left",
       autoClose: 1500,
       hideProgressBar: false,
@@ -126,7 +128,7 @@ export default function EditBooks() {
       progress: undefined,
       theme: "dark",
       onClose: () => navigate(`/books/${id}`),
-      });
+    });
   };
 
   const notifyFail = (message) => {
@@ -139,8 +141,8 @@ export default function EditBooks() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      onClose: () => window.location.reload()
-      });
+      onClose: () => window.location.reload(),
+    });
   };
 
   const notifyFailQuantity = (message) => {
@@ -153,7 +155,7 @@ export default function EditBooks() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      });
+    });
   };
 
   return (
@@ -250,9 +252,12 @@ export default function EditBooks() {
                 <option value="" disabled>
                   Author
                 </option>
-                {authors.map((author) => (
-                  <option key={author.id} value={author.id}>
-                    {author.name}
+                <option value="" disabled>
+                  Choose the author
+                </option>
+                {authors.map((authors) => (
+                  <option key={authors.id} value={authors.id}>
+                    {authors.name}
                   </option>
                 ))}
               </select>
