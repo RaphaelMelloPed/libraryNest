@@ -33,7 +33,7 @@ export const newBook = async (formDataObject) => {
 
 export const updateBook = async (id, formDataObject) => {
   try {
-    const response = await fetchApi.patch(`/books/update/${id}`, formDataObject);
+    const response = await fetchApi.patch(`/books/${id}`, formDataObject);
     return response.data;
   } catch (error) {
     throw error;

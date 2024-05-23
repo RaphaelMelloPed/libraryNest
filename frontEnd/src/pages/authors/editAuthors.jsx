@@ -5,14 +5,14 @@ import { findAuthor, updateAuthor } from "../.././../requests_api/authors";
 
 export default function EditAuthor() {
   const { id } = useParams();
-  const [formData, setFormData] = useState({ full_name: "", nationality: "" });
+  const [formData, setFormData] = useState({ name: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAuthor = async () => {
       try {
         const response = await findAuthor(id);
-        setFormData(response[0])
+        setFormData(response);
       } catch (error) {
         console.error("Error fetching author:", error);
       }
@@ -34,7 +34,7 @@ export default function EditAuthor() {
   };
 
   const notifySuccess = () => {
-    toast.success('Success!', {
+    toast.success("Success!", {
       position: "bottom-left",
       autoClose: 1000,
       hideProgressBar: false,
@@ -43,8 +43,8 @@ export default function EditAuthor() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      onClose: () => navigate("/authors")
-      });
+      onClose: () => navigate("/authors"),
+    });
   };
 
   const notifyFail = (message) => {
@@ -57,36 +57,35 @@ export default function EditAuthor() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      onClose: () => window.location.reload()
-      });
+      onClose: () => window.location.reload(),
+    });
   };
 
   return (
-    <div className="flex items-center justify-center" style={{ height: "60vh" }}>
+    <div
+      className="flex items-center justify-center"
+      style={{ height: "60vh" }}
+    >
       <div className="w-full max-w-lg p-4 bg-gray-800 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <h5 className="text-xl font-medium text-white">Edit Author</h5>
           <div className="mb-6">
-            <label htmlFor="full_name" className="block mb-2 text-sm font-medium text-white">Edit Name</label>
+            <label
+              htmlFor="name"
+              className="block mb-2 text-sm font-medium text-white"
+            >
+              Edit Name
+            </label>
             <input
               type="text"
-              id="full_name"
-              name="full_name"
-              onChange={(e) => setFormData({ ...formData, full_name: e.target.value.trim() })} value={formData.full_name}
+              id="name"
+              name="name"
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value.trim() })
+              }
+              value={formData.name}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Socrates"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="nationality" className="block mb-2 text-sm font-medium text-white">Edit Nationality</label>
-            <input
-              type="text"
-              id="nationality"
-              name="nationality"
-              onChange={(e) => setFormData({ ...formData, nationality: e.target.value.trim() })} value={formData.nationality}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Greek"
               required
             />
           </div>

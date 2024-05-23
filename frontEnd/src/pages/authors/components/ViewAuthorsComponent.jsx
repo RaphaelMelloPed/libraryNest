@@ -17,12 +17,11 @@ export default function ViewAuthorsComponent({ id, name }) {
   };
 
   const [userData, setUserData] = useState("");
-
+  const userDataFromStorage = localStorage.getItem("user");
+  const parsedUserData = JSON.parse(userDataFromStorage);
   useEffect(() => {
-    const userDataFromStorage = localStorage.getItem("user");
     if (userDataFromStorage) {
-      const parsedUserData = JSON.parse(userDataFromStorage);
-      setUserData(parsedUserData);
+      setUserData(parsedUserData.user);
     }
   }, []);
 
@@ -36,7 +35,7 @@ export default function ViewAuthorsComponent({ id, name }) {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      onClose: () => navigate("/authors")
+      onClose: () => window.location.reload()
       });
   };
 

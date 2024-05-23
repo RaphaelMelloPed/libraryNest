@@ -24,7 +24,7 @@ export const findAuthor = async (id) => {
 
 export const newAuthor = async (formData) => {
   try {
-    const response = await fetchApi.post(`/authors/new`, formData);
+    const response = await fetchApi.post(`/authors/`, formData);
     return response.data;
   } catch (error) {
     throw error;
@@ -33,7 +33,7 @@ export const newAuthor = async (formData) => {
 
 export const updateAuthor = async (id, formData) => {
   try {
-    const response = await fetchApi.patch(`/authors/update/${id}`, formData);
+    const response = await fetchApi.patch(`/authors/${id}`, formData);
     return response.data;
   } catch (error) {
     throw error;

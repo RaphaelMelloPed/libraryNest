@@ -13,8 +13,7 @@ export default function modal() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    full_name: "",
-    nationality: "",
+    name: "",
   });
 
   const handleChange = (e) => {
@@ -53,7 +52,7 @@ export default function modal() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      onClose: () => navigate("/authors")
+      onClose: () => window.location.reload()
       });
   };
 
@@ -95,34 +94,17 @@ export default function modal() {
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    html="full_name"
+                    html="name"
                     className="block mb-2 text-sm font-medium text-white"
                   >
                     Name
                   </label>
                   <input
                     type="text"
-                    name="full_name"
-                    id="full_name"
+                    name="name"
+                    id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Socrates"
-                    onChange={handleChange}
-                    required=""
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="nationality"
-                    className="block mb-2 text-sm font-medium text-white"
-                  >
-                    Nationality
-                  </label>
-                  <input
-                    type="text"
-                    name="nationality"
-                    id="nationality"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Greek"
                     onChange={handleChange}
                     required=""
                   />

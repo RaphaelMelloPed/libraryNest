@@ -11,7 +11,7 @@ export const viewCategories = async () => {
 
 export const newCategories = async (formData) => {
   try {
-    const response = await fetchApi.post(`/categories/new`, formData);
+    const response = await fetchApi.post(`/categories/`, formData);
     return response.data;
   } catch (error) {
     throw error;
@@ -33,7 +33,7 @@ export const findCategories = async (id) => {
 
 export const updateCategories = async (id, formData) => {
   try {
-    const response = await fetchApi.patch(`/categories/update/${id}`, formData);
+    const response = await fetchApi.patch(`/categories/${id}`, formData);
     return response.data;
   } catch (error) {
     throw error;
