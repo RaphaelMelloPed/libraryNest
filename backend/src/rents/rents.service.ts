@@ -55,7 +55,7 @@ export class RentsService {
   }
 
   async findAll() {
-    const allRents = await this.rentRepository.find()
+    const allRents = await this.rentRepository.find({ relations: ['book', 'user'] })
 
     if(!allRents){
       throw new NotFoundException('There are no rents')
@@ -93,7 +93,7 @@ export class RentsService {
 
   async remove(id: number) {
 
-    const findRents = await this.rentRepository.findOne({ where: { id }, relations: ['book'] })
+    const findRents = await this.rentRepository.findOne({ where: { id }, relations: ['book', 'users'] })
 
     if (findRents.book.quantity > 0) {
       findRents.book.quantity += 1;

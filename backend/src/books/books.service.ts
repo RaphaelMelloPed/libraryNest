@@ -32,46 +32,42 @@ export class BooksService {
       return 'This book already exist';
     }
 
-    const author = await this.authorService.findOne(author_id);
-    if (!author) {
-      throw new NotFoundException(`Author with ID ${author_id} not found`);
-    }
-
-    const category = await this.categoryService.findOne(category_id);
-    if (!category) {
-      throw new NotFoundException(`Category with ID ${category_id} not found`);
-    }
-
+    await this.authorService.findOne(author_id);
+    
+    await this.categoryService.findOne(category_id);
+    
     const newBook = this.bookRepository.create({
       name,
       description,
       quantity,
       image,
-      author,
-      category,
+      author: {id: author_id},
+      category: {id: category_id},
     });
-    console.log(newBook)
     return await this.bookRepository.save(newBook);
   }
 
   async findAll() {
-    const allBooks = await this.bookRepository.find();
+    const allBooks = await this.bookRepository.find({ relations: ['category', 'author'] })
 
-    if (!allBooks) {
-      throw new NotFoundException('There are no books yet');
+    if(!allBooks){
+      throw new NotFoundException('No books found')
     }
 
     return allBooks;
   }
 
   async findOne(id: number) {
+
     const findBook = await this.bookRepository.findOne({ where: { id } });
 
     if (!findBook) {
       throw new NotFoundException('Book not found');
     }
 
-    return findBook;
+    const oneBook = await this.bookRepository.findOne({ where: { id }, relations: ['category', 'author'] })
+
+    return oneBook;
   }
 
   async update(id: number, data: UpdateBookDto) {

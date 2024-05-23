@@ -42,8 +42,6 @@ export default function allRentsAdmin() {
     fetchRents();
   }, []);
 
-  console.log(rents)
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -105,11 +103,11 @@ export default function allRentsAdmin() {
                         pick_up_date={formatDateTime(rent.pick_up_date)}
                         returns_date={formatDateTime(rent.returns_date)}
                         user_id={
-                          user.find((user) => user.id === rent.user_id)
+                          user.find((user) => user.id === rent.user.id)
                             ?.name || "N/A"
                         }
                         book_id={
-                          books.find((book) => book.id === rent.book_id)
+                          books.find((book) => book.id === rent.book.id)
                             ?.name || "N/A"
                         }
                         id={rent.id}
