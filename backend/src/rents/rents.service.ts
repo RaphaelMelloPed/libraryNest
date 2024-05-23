@@ -93,7 +93,7 @@ export class RentsService {
 
   async remove(id: number) {
 
-    const findRents = await this.rentRepository.findOne({ where: { id }, relations: ['book', 'users'] })
+    const findRents = await this.rentRepository.findOne({ where: { id }, relations: ['book', 'user'] })
 
     if (findRents.book.quantity > 0) {
       findRents.book.quantity += 1;
