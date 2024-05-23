@@ -7,12 +7,17 @@ import { updateRents, findRents } from "../../../requests_api/rents";
 export default function EditRent() {
   const [renewed, setrenewed] = useState("");
 
-  const [book, setBook] = useState({ full_name: "" });
+  const [book, setBook] = useState({ name: "" });
   const [rent, setRent] = useState({ returns_date: "" });
   const [nextWeek, setNextWeek] = useState({new_date: ""})
-
-  const User = localStorage.getItem("user");
-  const userData = JSON.parse(User);
+  const [userData, setUserData] = useState("");
+  const userDataFromStorage = localStorage.getItem("user");
+  const parsedUserData = JSON.parse(userDataFromStorage);
+  useEffect(() => {
+    if (userDataFromStorage) {
+      setUserData(parsedUserData.user);
+    }
+  }, []);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -34,8 +39,8 @@ export default function EditRent() {
         setRent(rentData);
         setrenewed(rentData.returns_date);
         if (response.length > 0) {
-          const bookResponse = await findBooks(rentData.id_books);
-          setBook(bookResponse[0] ?? {});
+          const bookResponse = await findBooks(rentData.book.id);
+          setBook(bookResponse ?? {});
         }
       } catch (error) {
         console.error("Error fetching rent data:", error);
@@ -113,7 +118,7 @@ export default function EditRent() {
                 name="book_id"
                 disabled
                 className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value={book.full_name}
+                value={book.name}
                 onChange={(e) => setBook({ ...book, full_name: e.target.value })}
               />
             </div>
