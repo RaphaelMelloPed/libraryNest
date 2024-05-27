@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { AuthGuard } from 'src/guards/auth.guards';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -24,9 +26,11 @@ export class UsersController {
 
   @Post()
   @UseInterceptors(FileInterceptor('image')) 
-  async create(@Body() data: CreateUserDto,@UploadedFile() file: Express.Multer.File) {
+  async create(@Body() data: CreateUserDto, @UploadedFile() file: Express.Multer.File) {
     const imageUrl = await this.cloudinaryService.uploadImage(file);
+    console.log(imageUrl);
     const createUser = await this.usersService.create({ ...data, image: imageUrl });
+    console.log(createUser);
     return createUser;
   }
 

@@ -13,7 +13,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState('');
   const [formData, setFormData] = useState({
     email: "",
     name: "",

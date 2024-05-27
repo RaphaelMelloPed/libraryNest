@@ -8,10 +8,11 @@ export class CloudinaryService {
   constructor() {
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      cloud_key: process.env.CLOUDINARY_KEY,
-      cloud_secret: process.env.CLOUDINARY_SECRET,
+      api_key: process.env.CLOUDINARY_KEY,
+      api_secret: process.env.CLOUDINARY_SECRET,
       folder: process.env.CLOUDINARY_FOLDER
     });
+    
   }
 
   async uploadImage(image: any): Promise<string> {
