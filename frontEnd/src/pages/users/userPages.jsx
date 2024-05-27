@@ -3,14 +3,14 @@ import { Link, useParams } from "react-router-dom";
 import EditButton from "../../components/Buttons/EditButton";
 
 export default function Perfil() {
-  const [userData, setUserData] = useState("");
   const { id } = useParams();
 
+  const [userData, setUserData] = useState("");
+  const userDataFromStorage = localStorage.getItem("user");
+  const parsedUserData = JSON.parse(userDataFromStorage);
   useEffect(() => {
-    const userDataFromStorage = localStorage.getItem("user");
     if (userDataFromStorage) {
-      const parsedUserData = JSON.parse(userDataFromStorage);
-      setUserData(parsedUserData);
+      setUserData(parsedUserData.user);
     }
   }, []);
 
@@ -37,27 +37,11 @@ export default function Perfil() {
             </div>
             <div className="flex justify-center">
               <p className="mb-3 font-normal text-white">
-                Name: {userData.full_name}
-              </p>
-            </div>
-            <div className="flex justify-center">
-              <p className="mb-3 font-normal text-white">
-                CPF: {userData.cpf}
-               </p>
-            </div>
-            <div className="flex justify-center">
-              <p className="mb-3 font-normal text-white">
-                Address: {userData.full_address} -{" "}
-                {userData.additional_address_details}
+                Name: {userData.name}
               </p>
             </div>
             <div className="flex justify-center text-white">
-              <p className="mb-3 font-normal text-white">
-                Phone: {userData.phone}
-              </p>
-            </div>
-            <div className="flex justify-center text-white">
-                <EditButton link="/users/update/" id={userData.id}/>
+              <EditButton link="/users/update/" id={userData.id} />
             </div>
           </div>
         </div>

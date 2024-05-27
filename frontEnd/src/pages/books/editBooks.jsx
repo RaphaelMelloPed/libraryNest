@@ -33,7 +33,7 @@ export default function EditBooks() {
 
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value.trim(),
+      [e.target.id]: e.target.value,
     });
   };
 
@@ -99,15 +99,15 @@ export default function EditBooks() {
     try {
       setIsSubmitting(true);
       const formDataObject = new FormData();
-      formDataObject.append("name", books.name);
+      formDataObject.append("name", formData.name);
       formDataObject.append(
         "quantity",
-        parseInt(books.quantity)
+        parseInt(formData.quantity)
       );
-      formDataObject.append("description", books.description);
-      formDataObject.append("img", imageUrl);
-      formDataObject.append("author", parseInt(books.author.id));
-      formDataObject.append("category", parseInt(books.category.id));
+      formDataObject.append("description", formData.description);
+      formDataObject.append("image", imageUrl);
+      formDataObject.append("author", parseInt(formData.author.id));
+      formDataObject.append("category", parseInt(formData.category.id));
 
       await updateBook(id, formDataObject);
       notifySuccess();
@@ -116,6 +116,7 @@ export default function EditBooks() {
       console.error("Error calling API:", error.message);
     }
   };
+
 
   const notifySuccess = () => {
     toast.success("Success!", {
