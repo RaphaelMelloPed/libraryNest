@@ -52,6 +52,7 @@ export class UsersController {
     if (file) {
       imageUrl = await this.cloudinaryService.uploadImage(file);
     }
+    console.log(file);
     return this.usersService.update(+id, { ...updateUserDto, image: imageUrl });
   }
 

@@ -34,7 +34,6 @@ export const newBook = async (formDataObject) => {
 export const updateBook = async (id, formDataObject) => {
   try {
     const response = await fetchApi.patch(`/books/${id}`, formDataObject);
-    console.log(response.data)
     return response.data;
   } catch (error) {
     throw error;

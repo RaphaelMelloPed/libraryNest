@@ -1,5 +1,4 @@
 import { toast } from "react-toastify";
-import InputMask from "react-input-mask";
 import IconButton from "@mui/material/IconButton";
 import React, { useState, useEffect } from "react";
 import Visibility from "@mui/icons-material/Visibility";
@@ -16,19 +15,15 @@ export default function EditUser() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const [formData, setFormData] = useState({
-    full_name: "",
-    full_address: "",
-    additional_address_details: "",
-    phone: "",
+    name: "",
     password: "",
-    passwordConfirm: "",
-    cpf: ""
+    passwordConfirm: ""
   });
 
   const navigate = useNavigate();
 
   const handleFileChange = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files;
     if (file) {
       setImageUrl(file);
     } else {
@@ -60,7 +55,7 @@ export default function EditUser() {
     const fetchUsers = async () => {
       try {
         const response = await findUser(id);
-        setFormData(response[0]);
+        setFormData(response);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -85,14 +80,8 @@ export default function EditUser() {
     try {
       setIsSubmitting(true);
       const formDataObject = new FormData();
-      formDataObject.append("full_name", formData.full_name);
-      formDataObject.append("full_address", formData.full_address);
-      formDataObject.append(
-        "additional_address_details",
-        formData.additional_address_details
-      );
-      formDataObject.append("image", imageUrl);
-      formDataObject.append("phone", formData.phone);
+      formDataObject.append("name", formData.name);
+      formDataObject.append("image", imageUrl[0]);
       formDataObject.append("password", formData.password);
 
       if (formData.password !== passwordConfirm) {
@@ -122,7 +111,7 @@ export default function EditUser() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      // onClose: () => navigate("/")
+      onClose: () => navigate("/")
       });
   };
 
@@ -150,77 +139,22 @@ export default function EditUser() {
           <h5 className="text-xl font-medium text-white">Edit User</h5>
           <div className="mb-6">
             <label
-              htmlFor="full_name"
+              htmlFor="name"
               className="block mb-2 text-sm font-medium text-white"
             >
               Edit Name
             </label>
             <input
               type="text"
-              id="full_name"
-              name="full_name"
+              id="name"
+              name="name"
               onChange={formChange}
-              value={formData.full_name}
+              value={formData.name}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="The hobbit"
               required
             />
           </div>
-          <div className="mb-6">
-            <label
-              htmlFor="full_address"
-              className="block mb-2 text-sm font-medium text-white"
-            >
-              Edit address
-            </label>
-            <input
-              type="text"
-              id="full_address"
-              name="full_address"
-              onChange={formChange}
-              value={formData.full_address}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Address"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              htmlFor="additional_address_details"
-              className="block mb-2 text-sm font-medium text-white"
-            >
-              Edit address details
-            </label>
-            <input
-              type="text"
-              id="additional_address_details"
-              name="additional_address_details"
-              onChange={formChange}
-              value={formData.additional_address_details}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Address details"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              htmlFor="phone"
-              className="block mb-2 text-sm font-medium text-white"
-            >
-              Edit phone number
-            </label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              onChange={formChange}
-              value={formData.phone}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="phone"
-              required
-            />
-          </div>
-
           <div className="">
             <label
               htmlFor="password"
@@ -312,25 +246,6 @@ export default function EditUser() {
               </p>
             )}
           </div>
-
-          <div className="mb-6">
-              <label
-                htmlFor="cpf"
-                className="block mb-2 text-sm font-medium text-white dark:text-white"
-              >
-                CPF
-              </label>
-              <InputMask
-                mask="999.999.999-99"
-                id="cpf"
-                className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="xxx.xxx.xxx-xx"
-                value={formData.cpf}
-                required
-                onChange={formChange}
-              />
-            </div>
-
 
           <div className="">
             <label

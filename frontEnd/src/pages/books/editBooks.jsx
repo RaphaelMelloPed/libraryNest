@@ -105,7 +105,7 @@ export default function EditBooks() {
         parseInt(formData.quantity)
       );
       formDataObject.append("description", formData.description);
-      formDataObject.append("image", imageUrl);
+      formDataObject.append("image", imageUrl[0]);
       formDataObject.append("author", parseInt(formData.author.id));
       formDataObject.append("category", parseInt(formData.category.id));
 
