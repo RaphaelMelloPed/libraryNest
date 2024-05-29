@@ -43,7 +43,7 @@ describe('CategoriesService', () => {
             expect(result).toEqual(mockCategory);
         })
 
-        it('Should return "Exist the author" if category already exists', async () => {
+        it('Should return "This category already exist" if category already exists', async () => {
             const createCategoryDto: CreateCategoryDto = { name: 'title' }
 
             mockCategoryRepository.findOne.mockResolvedValueOnce({})
