@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { UserEntity } from "src/users/entities/user.entity";
-import { BookEntity } from "src/books/entities/book.entity";
+import { UserEntity } from "../../users/entities/user.entity";
+import { BookEntity } from "../../books/entities/book.entity";
 
 @Entity({
     name: 'reviews'

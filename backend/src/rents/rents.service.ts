@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RentEntity } from './entities/rent.entity';
 import { CreateRentDto } from './dto/create-rent.dto';
 import { UpdateRentDto } from './dto/update-rent.dto';
-import { BooksService } from 'src/books/books.service';
-import { UsersService } from 'src/users/users.service';
+import { BooksService } from '../books/books.service';
+import { UsersService } from '../users/users.service';
 import {
   Injectable,
   BadRequestException,

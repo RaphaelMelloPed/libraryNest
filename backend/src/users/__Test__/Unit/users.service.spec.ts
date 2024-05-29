@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from '../../users.service';
-import { CreateUserDto } from '../../dto/create-user.dto';
-import { validate } from 'class-validator';
-import { UserEntity } from '../../entities/user.entity';
-import { NotFoundException } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
+import { validate } from 'class-validator';
+import { NotFoundException } from '@nestjs/common';
+import { UsersService } from '../../users.service';
+import { Test, TestingModule } from '@nestjs/testing';
+import { UserEntity } from '../../entities/user.entity';
+import { CreateUserDto } from '../../dto/create-user.dto';
 
 const mockUserRepository = {
   create: jest.fn(),

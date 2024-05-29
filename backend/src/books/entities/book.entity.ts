@@ -1,5 +1,5 @@
-import { AuthorEntity } from 'src/authors/entities/author.entity';
-import { CategoryEntity } from 'src/categories/entities/category.entity';
+import { AuthorEntity } from '../../authors/entities/author.entity';
+import { CategoryEntity } from '../../categories/entities/category.entity';
 import {
   Entity,
   Column,

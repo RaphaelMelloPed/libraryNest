@@ -1,6 +1,6 @@
+import { faker } from "@faker-js/faker"
 import { validate } from "class-validator";
 import { CreateUserDto } from "src/users/dto/create-user.dto";
-import { faker } from "@faker-js/faker"
 
 describe("dto validate", () => {
     it('Should create a validate user', async () => {
