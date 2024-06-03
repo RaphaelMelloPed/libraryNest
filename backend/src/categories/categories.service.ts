@@ -1,81 +1,84 @@
-import { Repository } from 'typeorm';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CategoryEntity } from './entities/category.entity';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateCategoryInput } from 'src/graphQL/categories/input/category.input';
+
 @Injectable()
 export class CategoriesService {
+
   constructor(
     @InjectRepository(CategoryEntity)
-    private categoriesRepository: Repository<CategoryEntity>,
-  ) {}
+    private categoryRepository: Repository<CategoryEntity>
+  ) { }
 
-  async create({ name }: CreateCategoryDto) {
-    const existingCategory = await this.categoriesRepository.findOne({
-      where: { name: name },
+  async create({ name }: CreateCategoryInput): Promise<CategoryEntity> {
+    const existingCategory = await this.categoryRepository.findOne({
+      where: {
+        name: name
+      }
     });
-
+  
     if (existingCategory) {
-      return 'This category already exist';
+      throw new ConflictException("Category already exists");
     }
-
-    const newCategory = await this.categoriesRepository.create({ name });
-
-    return await this.categoriesRepository.save(newCategory);
+  
+    const newCategory = this.categoryRepository.create({ name });
+    return await this.categoryRepository.save(newCategory);
   }
+  
 
   async findAll() {
-    const allCategories = await this.categoriesRepository.find();
-
-    if (!allCategories) {
-      throw new NotFoundException('There are no categories');
-    }
-
+    const allCategories = await this.categoryRepository.find()
     return allCategories;
   }
 
   async findOne(id: number) {
-    const findCategory = await this.categoriesRepository.findOne({
-      where: { id },
-    });
+    const existingCategories = await this.existing(id)
 
-    if (!findCategory) {
-      throw new NotFoundException('Category not found!');
+    if (!existingCategories) {
+      throw new NotFoundException(`Categorie with ID ${id} not found`);
     }
 
-    return findCategory;
+
+    const oneCategory = await this.categoryRepository.findOne({ where: { id } })
+    return oneCategory;
   }
 
-  async update(id: number, { name }: UpdateCategoryDto) {
-    const findCategory = await this.categoriesRepository.findOne({
-      where: { id },
-    });
+  async update(id: number, { name }: CreateCategoryInput) {
 
-    if (!findCategory) {
-      throw new NotFoundException('Category not found!');
+    const existingCategories = await this.existing(id)
+
+    if (!existingCategories) {
+      throw new NotFoundException(`Categorie with ID ${id} not found`);
     }
 
-    await this.categoriesRepository.update(id, { name });
+    await this.categoryRepository.update(id, { name });
 
-    const updatedCategory = await this.categoriesRepository.findOne({
-      where: { id },
-    });
+    const updatedCategory = await this.categoryRepository.findOne({ where: { id } });
 
     return updatedCategory;
   }
 
   async remove(id: number) {
-    const findCategory = await this.categoriesRepository.findOne({
-      where: { id },
-    });
 
-    if (!findCategory) {
-      throw new NotFoundException('Category not found!');
+    const existingCategories = await this.existing(id)
+
+    if (!existingCategories) {
+      throw new NotFoundException(`Categorie with ID ${id} not found`);
     }
 
-    const deleteCategory = await this.categoriesRepository.delete({ id });
+    const deleteCategory = await this.categoryRepository.delete({ id })
 
     return deleteCategory;
+  }
+
+
+  existing(id: number) {
+    return this.categoryRepository.findOne({
+      where: {
+        id
+      }
+    })
   }
 }

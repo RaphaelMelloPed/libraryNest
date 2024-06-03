@@ -1,16 +1,25 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'categories' })
+@Entity({
+    name: "categories"
+})
+@ObjectType()
 export class CategoryEntity {
-  @PrimaryGeneratedColumn({
-    unsigned: true,
-  })
-  id: number;
 
-  @Column({
-    type: 'varchar',
-    length: 100,
-    unique: true,
-  })
-  name: string;
+    @PrimaryGeneratedColumn({
+        unsigned: true
+    })
+    @Field(() => ID)
+    id: number;
+
+    @Field()
+    @Column({
+        type: "varchar",
+        length: 63,
+        unique: true
+    })
+    name: string
+
+
 }

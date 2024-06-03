@@ -1,8 +1,9 @@
+import { join } from 'path';
 import * as dotenv from 'dotenv';
-dotenv.config();
 import { DataSource } from 'typeorm';
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
+import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
@@ -17,17 +18,26 @@ import { UserEntity } from './users/entities/user.entity';
 import { ReviewEntity } from './reviews/entities/review.entity';
 import { AuthorEntity } from './authors/entities/author.entity';
 import { CategoriesModule } from './categories/categories.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CategoryEntity } from './categories/entities/category.entity';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
+dotenv.config();
 @Module({
   imports: [
-    CategoriesModule,
-    BooksModule,
-    AuthorsModule,
-    RentsModule,
-    ReviewsModule,
-    UsersModule,
     AuthModule,
+    UsersModule,
+    BooksModule,
+    RentsModule,
+    AuthorsModule,
+    ReviewsModule,
+    CategoriesModule,
+    CloudinaryModule,
+
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
 
     TypeOrmModule.forRoot({
       type: 'mysql',
