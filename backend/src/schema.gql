@@ -2,17 +2,29 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AuthorType {
-  id: ID!
-  name: String!
-}
-
 type CategoryType {
   id: ID!
   name: String!
 }
 
+type AuthorType {
+  id: ID!
+  name: String!
+}
+
+type BookType {
+  id: ID!
+  name: String!
+  quantity: Float!
+  image: String!
+  description: String!
+  category: CategoryType!
+  author: AuthorType!
+}
+
 type Query {
+  books: [BookType!]!
+  book(id: Float!): BookType!
   authors: [AuthorType!]!
   author(id: Int!): AuthorType!
   categories: [CategoryType!]!
@@ -20,12 +32,24 @@ type Query {
 }
 
 type Mutation {
+  createBook(data: CreateBookInput!): BookType!
+  updateBook(id: Float!, input: CreateBookInput!): BookType!
+  removeBook(id: Float!): BookType!
   createAuthor(data: CreateAuthorInput!): AuthorType!
   updateAuthor(id: Int!, author: CreateAuthorInput!): AuthorType!
   removeAuthor(id: Int!): AuthorType!
   createCategory(data: CreateCategoryInput!): CategoryType!
   updateCategory(id: Int!, category: CreateCategoryInput!): CategoryType!
   removeCategory(id: Int!): CategoryType!
+}
+
+input CreateBookInput {
+  name: String!
+  quantity: Float!
+  image: String!
+  description: String!
+  category_id: Float!
+  author_id: Float!
 }
 
 input CreateAuthorInput {
