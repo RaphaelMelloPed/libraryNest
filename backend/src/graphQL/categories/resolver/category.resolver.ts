@@ -9,7 +9,7 @@ export class CategoriesResolver {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Query(() => [CategoryType])
-  findAll() {
+  categories() {
     return this.categoriesService.findAll();
   }
 

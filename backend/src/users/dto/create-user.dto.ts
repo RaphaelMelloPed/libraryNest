@@ -1,25 +1,25 @@
-import { IsNotEmpty, IsString, MaxLength, IsEmail, IsNumber, IsStrongPassword, isNotEmpty } from "class-validator";
+// import { IsNotEmpty, IsString, MaxLength, IsEmail, IsNumber, IsStrongPassword, isNotEmpty } from "class-validator";
 
-export class CreateUserDto {
-    @IsNotEmpty()
-    @IsEmail()
-    email: string
+// export class CreateUserDto {
+//     @IsNotEmpty()
+//     @IsEmail()
+//     email: string
 
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(100)
-    name: string
+//     @IsNotEmpty()
+//     @IsString()
+//     @MaxLength(100)
+//     name: string
 
-    @IsNotEmpty()
-    @IsStrongPassword({
-        minLength: 8,
-        minUppercase: 0,
-        minNumbers: 3
-    })
-    password: string
+//     @IsNotEmpty()
+//     @IsStrongPassword({
+//         minLength: 8,
+//         minUppercase: 0,
+//         minNumbers: 3
+//     })
+//     password: string
 
-    @IsString()
-    image: string
+//     @IsString()
+//     image: string
     
 
-}
+// }

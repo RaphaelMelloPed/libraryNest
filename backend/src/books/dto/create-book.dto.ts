@@ -1,23 +1,23 @@
-import { IsInt, IsNotEmpty, IsString, MaxLength, Min } from 'class-validator';
+// import { IsInt, IsNotEmpty, IsString, MaxLength, Min } from 'class-validator';
 
-export class CreateBookDto {
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(100)
-  name: string;
+// export class CreateBookDto {
+//   @IsString()
+//   @IsNotEmpty()
+//   @MaxLength(100)
+//   name: string;
 
-  @IsString()
-  @MaxLength(255)
-  description: string;
+//   @IsString()
+//   @MaxLength(255)
+//   description: string;
 
-  @IsNotEmpty()
-  @IsInt()
-  @Min(0)
-  quantity: number;
+//   @IsNotEmpty()
+//   @IsInt()
+//   @Min(0)
+//   quantity: number;
 
-  image: string;
+//   image: string;
 
-  category_id: number;
+//   category_id: number;
 
-  author_id: number;
-}
+//   author_id: number;
+// }

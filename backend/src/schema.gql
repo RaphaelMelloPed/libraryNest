@@ -2,20 +2,34 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AuthorType {
+  id: ID!
+  name: String!
+}
+
 type CategoryType {
   id: ID!
   name: String!
 }
 
 type Query {
-  findAll: [CategoryType!]!
+  authors: [AuthorType!]!
+  author(id: Int!): AuthorType!
+  categories: [CategoryType!]!
   category(id: Int!): CategoryType!
 }
 
 type Mutation {
+  createAuthor(data: CreateAuthorInput!): AuthorType!
+  updateAuthor(id: Int!, author: CreateAuthorInput!): AuthorType!
+  removeAuthor(id: Int!): AuthorType!
   createCategory(data: CreateCategoryInput!): CategoryType!
   updateCategory(id: Int!, category: CreateCategoryInput!): CategoryType!
   removeCategory(id: Int!): CategoryType!
+}
+
+input CreateAuthorInput {
+  name: String!
 }
 
 input CreateCategoryInput {
