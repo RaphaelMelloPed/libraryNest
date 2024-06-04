@@ -22,7 +22,17 @@ type BookType {
   author: AuthorType!
 }
 
+type UserType {
+  id: ID!
+  email: String!
+  name: String!
+  password: String!
+  image: String!
+}
+
 type Query {
+  users: [UserType!]!
+  user(id: Float!): UserType!
   books: [BookType!]!
   book(id: Float!): BookType!
   authors: [AuthorType!]!
@@ -32,6 +42,9 @@ type Query {
 }
 
 type Mutation {
+  createUser(data: CreateUserInput!): UserType!
+  updateUser(id: Float!, input: CreateUserInput!): UserType!
+  removeUser(id: Float!): UserType!
   createBook(data: CreateBookInput!): BookType!
   updateBook(id: Float!, input: CreateBookInput!): BookType!
   removeBook(id: Float!): BookType!
@@ -41,6 +54,13 @@ type Mutation {
   createCategory(data: CreateCategoryInput!): CategoryType!
   updateCategory(id: Int!, category: CreateCategoryInput!): CategoryType!
   removeCategory(id: Int!): CategoryType!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  password: String!
+  image: String!
 }
 
 input CreateBookInput {

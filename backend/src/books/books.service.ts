@@ -2,9 +2,13 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookEntity } from './entities/book.entity';
 import { AuthorsService } from '../authors/authors.service';
-import {CreateBookInput} from 'src/graphQL/books/input/book.input'
+import { CreateBookInput } from 'src/graphQL/books/input/book.input';
 import { CategoriesService } from '../categories/categories.service';
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 
 @Injectable()
 export class BooksService {
@@ -15,7 +19,14 @@ export class BooksService {
     private readonly authorService: AuthorsService,
   ) {}
 
-  async create({ name, description, quantity, image, category_id, author_id }: CreateBookInput) {
+  async create({
+    name,
+    description,
+    quantity,
+    image,
+    category_id,
+    author_id,
+  }: CreateBookInput) {
     const existingBook = await this.bookRepository.findOne({ where: { name } });
 
     if (existingBook) {
@@ -45,7 +56,9 @@ export class BooksService {
   }
 
   async findAll() {
-    const allBooks = await this.bookRepository.find({ relations: ['category', 'author'] });
+    const allBooks = await this.bookRepository.find({
+      relations: ['category', 'author'],
+    });
 
     if (!allBooks || allBooks.length === 0) {
       throw new NotFoundException('No books found');
@@ -55,7 +68,10 @@ export class BooksService {
   }
 
   async findOne(id: number) {
-    const book = await this.bookRepository.findOne({ where: { id }, relations: ['category', 'author'] });
+    const book = await this.bookRepository.findOne({
+      where: { id },
+      relations: ['category', 'author'],
+    });
 
     if (!book) {
       throw new NotFoundException('Book not found');
@@ -65,7 +81,10 @@ export class BooksService {
   }
 
   async update(id: number, data: CreateBookInput) {
-    const book = await this.bookRepository.findOne({ where: { id }, relations: ['category', 'author'] });
+    const book = await this.bookRepository.findOne({
+      where: { id },
+      relations: ['category', 'author'],
+    });
 
     if (!book) {
       throw new NotFoundException('Book not found');

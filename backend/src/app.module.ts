@@ -9,12 +9,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 // import { RentsModule } from './rents/rents.module';
 import { BooksModule } from './books/books.module';
-// import { UsersModule } from './users/users.module';
+import { UsersModule } from './users/users.module';
 // import { ReviewsModule } from './reviews/reviews.module';
 import { AuthorsModule } from './authors/authors.module';
 // import { RentEntity } from './rents/entities/rent.entity';
 import { BookEntity } from './books/entities/book.entity';
-// import { UserEntity } from './users/entities/user.entity';
+import { UserEntity } from './users/entities/user.entity';
 // import { ReviewEntity } from './reviews/entities/review.entity';
 import { AuthorEntity } from './authors/entities/author.entity';
 import { CategoriesModule } from './categories/categories.module';
@@ -26,7 +26,7 @@ dotenv.config();
 @Module({
   imports: [
     // AuthModule,
-    // UsersModule,
+    UsersModule,
     BooksModule,
     // RentsModule,
     AuthorsModule,
@@ -52,7 +52,7 @@ dotenv.config();
         CategoryEntity,
         // RentEntity,
         // ReviewEntity,
-        // UserEntity,
+        UserEntity,
       ],
       synchronize: true,
     }),

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { BooksService } from './books.service';
-import {BookResolver} from 'src/graphQL/books/resolver/book.resolver'
+import { BookResolver } from 'src/graphQL/books/resolver/book.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BookEntity } from './entities/book.entity';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
