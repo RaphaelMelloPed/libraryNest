@@ -1,13 +1,22 @@
 import fetchApi from "../axios/api";
 
 export const viewCategories = async () => {
+  const query = `
+  query {
+    categories{
+     id
+     name
+   }
+ }
+  `;
+
   try {
-    const response = await fetchApi.get(`/categories`);
-    return response.data;
+    const data = await fetchApi.post('/graphql', { query });
+    return data.data.data.categories;
   } catch (error) {
     throw error;
   }
-};
+}
 
 export const newCategories = async (formData) => {
   try {
