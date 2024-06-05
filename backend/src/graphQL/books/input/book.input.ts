@@ -7,7 +7,7 @@ export class CreateBookInput {
   @Length(3)
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name?: string;
 
   @Field()
   @IsNotEmpty()
@@ -15,15 +15,15 @@ export class CreateBookInput {
 
   @Field()
   @IsUrl()
-  image: string;
+  image?: string;
 
   @Field()
   @IsString()
-  description: string;
+  description?: string;
 
   @Field()
-  category_id: number;
+  category_id?: number;
 
   @Field()
-  author_id: number;
+  author_id?: number;
 }

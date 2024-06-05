@@ -1,36 +1,39 @@
-// import { UserEntity } from '../../users/entities/user.entity';
-// import { BookEntity } from '../../books/entities/book.entity';
-// import {
-//   Entity,
-//   Column,
-//   PrimaryGeneratedColumn,
-//   JoinColumn,
-//   ManyToOne,
-// } from 'typeorm';
+import { UserEntity } from '../../users/entities/user.entity';
+import { BookEntity } from '../../books/entities/book.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  ManyToOne,
+} from 'typeorm';
+import { Field } from '@nestjs/graphql';
 
-// @Entity({name: 'rents'})
-// export class RentEntity {
-//     @PrimaryGeneratedColumn({
-//         unsigned: true
-//     })
-//     id: number;
+@Entity({name: 'rents'})
+export class RentEntity {
 
-//     @Column({
-//         type: 'date'
-//     })
-//     pick_up_date: Date
+    @PrimaryGeneratedColumn({
+        unsigned: true
+    })
+    @Field()
+    id: number;
 
-//     @Column({
-//         type: 'date'
-//     })
-//     returns_date: Date
+    @Column()
+    @Field()
+    pick_up_date: string
 
-//     @JoinColumn({ name: 'user_id' })
-//     @ManyToOne(() => UserEntity)
-//     user: UserEntity
+    @Column()
+    @Field()
+    returns_date: string
 
-//     @JoinColumn({ name: 'book_id' })
-//     @ManyToOne(() => BookEntity, { onDelete: 'CASCADE' })
-//     book: BookEntity
+    @Field()
+    @JoinColumn({ name: 'user_id' })
+    @ManyToOne(() => UserEntity)
+    user: UserEntity
 
-// }
+    @Field()
+    @JoinColumn({ name: 'book_id' })
+    @ManyToOne(() => BookEntity, { onDelete: 'CASCADE' })
+    book: BookEntity
+
+}

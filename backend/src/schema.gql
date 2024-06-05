@@ -36,6 +36,14 @@ type BookType {
   author: AuthorType!
 }
 
+type RentType {
+  id: ID!
+  pick_up_date: String!
+  returns_date: String!
+  user: UserType!
+  book: BookType!
+}
+
 type Query {
   users: [UserType!]!
   user(id: Float!): UserType!
@@ -45,6 +53,8 @@ type Query {
   author(id: Int!): AuthorType!
   categories: [CategoryType!]!
   category(id: Int!): CategoryType!
+  rents: [RentType!]!
+  rent(id: Float!): RentType!
 }
 
 type Mutation {
@@ -61,6 +71,9 @@ type Mutation {
   createCategory(data: CreateCategoryInput!): CategoryType!
   updateCategory(id: Int!, category: CreateCategoryInput!): CategoryType!
   removeCategory(id: Int!): CategoryType!
+  createRent(data: CreateRentInput!): RentType!
+  updateRent(id: Float!, input: CreateRentInput!): RentType!
+  removeRent(id: Float!): RentType!
 }
 
 input AuthLoginDTO {
@@ -90,4 +103,11 @@ input CreateAuthorInput {
 
 input CreateCategoryInput {
   name: String!
+}
+
+input CreateRentInput {
+  pick_up_date: String!
+  returns_date: String!
+  user_id: Float
+  book_id: Float
 }

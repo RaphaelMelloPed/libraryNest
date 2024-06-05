@@ -1,111 +1,118 @@
-// import { Repository } from 'typeorm';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { RentEntity } from './entities/rent.entity';
-// import { CreateRentDto } from './dto/create-rent.dto';
-// import { UpdateRentDto } from './dto/update-rent.dto';
-// import { BooksService } from '../books/books.service';
-// import { UsersService } from '../users/users.service';
-// import {
-//   Injectable,
-//   BadRequestException,
-//   NotFoundException,
-// } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { RentEntity } from './entities/rent.entity';
+import { CreateRentInput } from 'src/graphQL/rents/input/rent.input';
+import { BooksService } from '../books/books.service';
+import { UsersService } from '../users/users.service';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 
-// @Injectable()
-// export class RentsService {
-//   constructor(
-//     @InjectRepository(RentEntity)
-//     private rentRepository: Repository<RentEntity>,
-//     private readonly booksService: BooksService,
-//     private readonly userService: UsersService
-//   ) {}
+@Injectable()
+export class RentsService {
+  constructor(
+    @InjectRepository(RentEntity)
+    private rentRepository: Repository<RentEntity>,
+    private readonly booksService: BooksService,
+    private readonly userService: UsersService
+  ) {}
 
-//   async create({
-//     pick_up_date,
-//     returns_date,
-//     user_id,
-//     book_id,
-//   }: CreateRentDto) {
-//     const book = await this.booksService.findOne(book_id);
-//     const user = await this.userService.findOne(user_id);
+  async create({ pick_up_date, returns_date, user_id, book_id }: CreateRentInput) {
+    const book = await this.booksService.findOne(book_id);
+    const user = await this.userService.findOne(user_id);
 
-//     if (!book) {
-//       throw new NotFoundException('Book not found');
-//     }
+    if (!book) {
+      throw new NotFoundException('Book not found');
+    }
 
-//     if (!user) {
-//       throw new NotFoundException('User not found');
-//     }
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
-//     if (book.quantity < 0) {
-//       throw new BadRequestException(`Book not available for rent`);
-//     }
+    if (book.quantity < 0) {
+      throw new BadRequestException(`Book not available for rent`);
+    }
 
-//     book.quantity -= 1;
-//     await this.booksService.update(book_id, { quantity: book.quantity });
+    book.quantity -= 1;
+    await this.booksService.update(book_id, { quantity: book.quantity });
 
-//     const newRent = this.rentRepository.create({
-//       pick_up_date,
-//       returns_date,
-//       book: { id: book_id },
-//       user: { id: user_id },
-//     });
+    const newRent = this.rentRepository.create({
+      pick_up_date,
+      returns_date,
+      book: { id: book_id },
+      user: { id: user_id },
+    });
 
-//     return await this.rentRepository.save(newRent);
-//   }
+    return await this.rentRepository.save(newRent);
+  }
 
-//   async findAll() {
-//     const allRents = await this.rentRepository.find({ relations: ['book', 'user'] })
+  async findAll() {
+    const allRents = await this.rentRepository.find({ relations: ['book', 'user'] });
 
-//     if(!allRents){
-//       throw new NotFoundException('There are no rents')
-//     }
+    if (!allRents) {
+      throw new NotFoundException('There are no rents');
+    }
 
-//     return allRents;
-//   }
+    return allRents;
+  }
 
-//   async findOne(id: number) {
-//     const allRents = await this.rentRepository.find({ relations: ['book', 'user'] })
-//     const rentsWithMatchingBookId = allRents.filter(rents => rents.user.id == id);
+  async findOne(id: number) {
+    const oneRent = await this.rentRepository.findOne({ where: { id }, relations: ['book', 'user'] });
 
-//     if (rentsWithMatchingBookId.length == 0) {
-//       throw new NotFoundException(`No rents found`);
-//     }
+    if (!oneRent) {
+      throw new NotFoundException('Rent not found');
+    }
 
-//     return rentsWithMatchingBookId;
+    return oneRent;
+  }
 
-//   }
+  async update(id: number, data: CreateRentInput) {
+    const { pick_up_date, returns_date, user_id, book_id } = data;
 
-//   async update(id: number, data: UpdateRentDto) {
+    const rent = await this.rentRepository.findOne({ where: { id }, relations: ['user', 'book'] });
 
-//     const findRents = await this.rentRepository.findOne({where: {id}})
+    if (!rent) {
+      throw new NotFoundException(`Rent not found`);
+    }
 
+    if (user_id) {
+      const user = await this.userService.findOne(user_id);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      rent.user = user;
+    }
 
-//     if (!findRents) {
-//       throw new NotFoundException(`Rent not found`);
-//     }
+    if (book_id) {
+      const book = await this.booksService.findOne(book_id);
+      if (!book) {
+        throw new NotFoundException('Book not found');
+      }
+      rent.book = book;
+    }
 
-//     const updateBook = await this.rentRepository.update(id, data);
+    rent.pick_up_date = pick_up_date;
+    rent.returns_date = returns_date;
 
+    await this.rentRepository.save(rent);
 
-//     return updateBook;
-//   }
+    return rent;
+  }
 
-//   async remove(id: number) {
+  async remove(id: number) {
+    const rent = await this.rentRepository.findOne({ where: { id }, relations: ['book', 'user'] });
 
-//     const findRents = await this.rentRepository.findOne({ where: { id }, relations: ['book', 'user'] })
+    if (!rent) {
+      throw new NotFoundException('Rent not found');
+    }
 
-//     if (findRents.book.quantity > 0) {
-//       findRents.book.quantity += 1;
-//       await this.booksService.update(findRents.book.id, { quantity: findRents.book.quantity });
+    if (rent.book.quantity > 0) {
+      rent.book.quantity += 1;
+      await this.booksService.update(rent.book.id, { quantity: rent.book.quantity });
+    } else {
+      throw new BadRequestException(`Book is not available for rent`);
+    }
 
-//     } else {
-//       throw new BadRequestException(`Book is not available for rent`);
-//     }
+    await this.rentRepository.delete({ id });
 
-//     await this.rentRepository.delete({ id });
-
-
-//     return { message: `Rent successfully deleted` };
-//   }
-// }
+    return { message: `Rent successfully deleted` };
+  }
+}
