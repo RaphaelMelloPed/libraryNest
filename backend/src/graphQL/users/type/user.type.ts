@@ -16,4 +16,7 @@ export class UserType {
 
     @Field()
     image: string;
+
+    @Field()
+    admin: 0 | 1;
 }

@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type UserType {
+  id: ID!
+  email: String!
+  name: String!
+  password: String!
+  image: String!
+  admin: Float!
+}
+
+type AuthPayload {
+  accessToken: String!
+  user: UserType!
+}
+
 type CategoryType {
   id: ID!
   name: String!
@@ -22,14 +36,6 @@ type BookType {
   author: AuthorType!
 }
 
-type UserType {
-  id: ID!
-  email: String!
-  name: String!
-  password: String!
-  image: String!
-}
-
 type Query {
   users: [UserType!]!
   user(id: Float!): UserType!
@@ -42,6 +48,7 @@ type Query {
 }
 
 type Mutation {
+  login(input: AuthLoginDTO!): AuthPayload!
   createUser(data: CreateUserInput!): UserType!
   updateUser(id: Float!, input: CreateUserInput!): UserType!
   removeUser(id: Float!): UserType!
@@ -54,6 +61,11 @@ type Mutation {
   createCategory(data: CreateCategoryInput!): CategoryType!
   updateCategory(id: Int!, category: CreateCategoryInput!): CategoryType!
   removeCategory(id: Int!): CategoryType!
+}
+
+input AuthLoginDTO {
+  email: String!
+  password: String!
 }
 
 input CreateUserInput {

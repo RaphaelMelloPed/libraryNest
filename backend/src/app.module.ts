@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 // import { RentsModule } from './rents/rents.module';
 import { BooksModule } from './books/books.module';
@@ -25,7 +25,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 dotenv.config();
 @Module({
   imports: [
-    // AuthModule,
+    AuthModule,
     UsersModule,
     BooksModule,
     // RentsModule,
