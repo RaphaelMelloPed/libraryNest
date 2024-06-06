@@ -44,8 +44,8 @@ export default function modal() {
 
   const notifySuccess = () => {
     toast.success('Successifully created the category!', {
-      position: "top-center",
-      autoClose: 3000,
+      position: "bottom-left",
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -58,8 +58,8 @@ export default function modal() {
 
   const notifyFail = () => {
     toast.error('Something went wrong!', {
-      position: "top-center",
-      autoClose: 3000,
+      position: "bottom-left",
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
