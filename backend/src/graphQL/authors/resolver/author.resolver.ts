@@ -3,6 +3,7 @@ import { AuthorsService } from 'src/authors/authors.service';
 import { AuthorType } from '../type/author.type';
 import { CreateAuthorArgs } from '../args/author.args';
 import { CreateAuthorInput } from '../input/author.input';
+import { SoftDeleteAuthorInput } from '../input/softDeleteAuthor.input';
 
 @Resolver(() => AuthorType)
 export class AuthorResolver {
@@ -34,5 +35,10 @@ export class AuthorResolver {
   @Mutation(() => AuthorType)
   async removeAuthor(@Args('id', { type: () => Int }) id: number) {
     return this.authorsService.remove(id);
+  }
+
+  @Mutation(() => AuthorType)
+  async softDeleteAuthor(@Args('input') input: SoftDeleteAuthorInput): Promise<AuthorType> {
+    return this.authorsService.softDelete(input.id);
   }
 }

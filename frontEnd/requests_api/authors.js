@@ -11,10 +11,12 @@ export const viewAuthors = async () => {
   `;
 
   try {
-    const response = await fetchApi.post('/graphql', { query });
-    
+    const response = await fetchApi.post("/graphql", { query });
+
     if (response.data.errors) {
-      throw new Error(response.data.errors.map(error => error.message).join(', '));
+      throw new Error(
+        response.data.errors.map((error) => error.message).join(", ")
+      );
     }
 
     return response.data.data.authors;
@@ -35,11 +37,11 @@ export const findAuthor = async (id) => {
   `;
 
   try {
-    const response = await fetchApi.post('/graphql', {
+    const response = await fetchApi.post("/graphql", {
       query,
-      variables: { id }
+      variables: { id },
     });
-    
+
     if (!response.data.data.author) {
       throw new Error("No author found for the given ID");
     }
@@ -62,13 +64,15 @@ export const newAuthor = async (name) => {
   `;
 
   try {
-    const response = await fetchApi.post('/graphql', {
+    const response = await fetchApi.post("/graphql", {
       query: mutation,
-      variables: { name }
+      variables: { name },
     });
-    
+
     if (response.data.errors) {
-      throw new Error(response.data.errors.map(error => error.message).join(', '));
+      throw new Error(
+        response.data.errors.map((error) => error.message).join(", ")
+      );
     }
 
     return response.data.data.createAuthor;
@@ -89,13 +93,15 @@ export const updateAuthor = async (id, name) => {
   `;
 
   try {
-    const response = await fetchApi.post('/graphql', {
+    const response = await fetchApi.post("/graphql", {
       query: mutation,
-      variables: { id, name }
+      variables: { id, name },
     });
-    
+
     if (response.data.errors) {
-      throw new Error(response.data.errors.map(error => error.message).join(', '));
+      throw new Error(
+        response.data.errors.map((error) => error.message).join(", ")
+      );
     }
 
     return response.data.data.updateAuthor;
@@ -107,23 +113,25 @@ export const updateAuthor = async (id, name) => {
 
 export const deleteAuthor = async (id) => {
   const mutation = `
-    mutation ($id: ID!) {
-      removeAuthor(id: $id) {
-        id
-        name
-        # Adicione outros campos que deseja retornar após a exclusão do autor
-      }
+  mutation{
+    removeAuthor(id: ${id}){
+      id,
+      name
     }
+  }
   `;
-
+  console.log(mutation);
   try {
-    const response = await fetchApi.post('/graphql', {
+    const response = await fetchApi.post("/graphql", {
       query: mutation,
-      variables: { id }
+      variables: { id },
     });
-    
+    console.log(response, "response");
+
     if (response.data.errors) {
-      throw new Error(response.data.errors.map(error => error.message).join(', '));
+      throw new Error(
+        response.data.errors.map((error) => error.message).join(", ")
+      );
     }
 
     return response.data.data.removeAuthor;

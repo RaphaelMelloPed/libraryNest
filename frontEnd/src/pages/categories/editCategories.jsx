@@ -6,6 +6,7 @@ import { findCategories, updateCategories } from "../.././../requests_api/catego
 export default function EditCategory() {
   const { id } = useParams();
   const [formData, setFormData] = useState({ name: ""});
+  const [nameCategory, setNameCategory] = useState({ name: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +21,9 @@ export default function EditCategory() {
 
     fetchCategories();
   }, [id]);
+
+  
+  console.log(id, formData)
 
   const handleSubmit = async (e) => {
     e.preventDefault();

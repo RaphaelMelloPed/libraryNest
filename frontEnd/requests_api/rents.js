@@ -118,8 +118,8 @@ export const newRents = async (rentData) => {
 
 export const updateRents = async (id, rents, renewed) => {
   const mutation = `
-    mutation($id: Number!, $input: RentUpdateInput!) {
-      updateRent(id: $id, input: $input) {
+    {
+      updateRent(id: ${id}, input: ${input}) {
         id
         pick_up_date
         returns_date

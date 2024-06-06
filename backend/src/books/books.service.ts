@@ -58,6 +58,7 @@ export class BooksService {
   async findAll() {
     const allBooks = await this.bookRepository.find({
       relations: ['category', 'author'],
+      where: { deletedAt: null }, // Exclui livros marcados como "excluídos"
     });
 
     if (!allBooks || allBooks.length === 0) {
@@ -69,7 +70,7 @@ export class BooksService {
 
   async findOne(id: number) {
     const book = await this.bookRepository.findOne({
-      where: { id },
+      where: { id, deletedAt: null }, // Exclui livros marcados como "excluídos"
       relations: ['category', 'author'],
     });
 
@@ -82,7 +83,7 @@ export class BooksService {
 
   async update(id: number, data: CreateBookInput) {
     const book = await this.bookRepository.findOne({
-      where: { id },
+      where: { id, deletedAt: null }, // Exclui livros marcados como "excluídos"
       relations: ['category', 'author'],
     });
 
@@ -122,5 +123,18 @@ export class BooksService {
     await this.bookRepository.delete(id);
 
     return { message: 'Book successfully deleted' };
+  }
+
+  async softDelete(id: number) {
+    const book = await this.bookRepository.findOne({ where: { id } });
+
+    if (!book) {
+      throw new NotFoundException('Book not found');
+    }
+
+    book.deletedAt = new Date();
+    await this.bookRepository.save(book);
+
+    return { message: 'Book successfully soft deleted' };
   }
 }

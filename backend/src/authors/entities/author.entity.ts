@@ -1,4 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'authors' })
 export class AuthorEntity {
@@ -13,4 +18,7 @@ export class AuthorEntity {
     unique: true,
   })
   name: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  deletedAt: Date;
 }

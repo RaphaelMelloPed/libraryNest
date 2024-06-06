@@ -20,8 +20,8 @@ export const viewCategories = async () => {
 
 export const findCategories = async (id) => {
   const query = `
-    query($id: ID!) {
-      category(id: $id) {
+    {
+      category(id: ${id}) {
         id
         name
       }
@@ -40,45 +40,44 @@ export const findCategories = async (id) => {
   }
 };
 
-export const newCategories = async (name) => {
-  const mutation = `
-    mutation($name: String!) {
-      createCategory(data: { name: $name }) {
+export const newCategories = async (id, formData) => {
+  const query = `
+    mutation CreateCategory(${id}: Number!, ${formData}: String!) {
+      createCategory(data: { id: ${id}, name: ${formData} }) {
         id
         name
-        # Adicione outros campos que deseja retornar após a criação da categoria
       }
     }
   `;
 
+  const variables = { formData };
+
   try {
-    const response = await fetchApi.post("/graphql", {
-      query: mutation,
-      variables: { name },
-    });
+    const response = await fetchApi.post("/graphql", { query, variables });
     return response.data.data.createCategory;
   } catch (error) {
-    console.error("Error in newCategory:", error);
+    console.error("Error in newCategories:", error);
     throw error;
   }
 };
 
-export const updateCategories = async (id, name) => {
+
+export const updateCategories = async (id, formData) => {
   const mutation = `
-    mutation($id: ID!, $name: String!) {
-      updateCategory(id: $id, input: { name: $name }) {
+    {
+      updateCategory(id: ${id}, input: { name: ${formData.name} }) {
         id
         name
-        # Adicione outros campos que deseja retornar após a atualização da categoria
       }
     }
   `;
-
+    console.log(mutation)
   try {
     const response = await fetchApi.post("/graphql", {
       query: mutation,
-      variables: { id, name },
+      variables: { id, formData },
     });
+    console.log(response, "response")
 
     if (response.data.errors) {
       throw new Error(
@@ -95,11 +94,10 @@ export const updateCategories = async (id, name) => {
 
 export const deleteCategories = async (id) => {
   const mutation = `
-    mutation($id: ID!) {
-      removeCategory(id: $id) {
+    {
+      removeCategory(id: ${id}) {
         id
         name
-        # Adicione outros campos que deseja retornar após a exclusão da categoria
       }
     }
   `;

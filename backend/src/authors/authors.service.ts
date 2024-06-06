@@ -21,7 +21,7 @@ export class AuthorsService {
     });
 
     if (existingAuthor) {
-      throw new ConflictException('This author already exist');
+      throw new ConflictException('This author already exists');
     }
 
     const newAuthor = await this.authorsRepository.create({ name });
@@ -40,19 +40,19 @@ export class AuthorsService {
   }
 
   async findOne(id: number) {
-    const findAuthors = await this.authorsRepository.findOne({ where: { id } });
+    const findAuthor = await this.authorsRepository.findOne({ where: { id } });
 
-    if (!findAuthors) {
+    if (!findAuthor) {
       throw new NotFoundException('Author not found');
     }
 
-    return findAuthors;
+    return findAuthor;
   }
 
   async update(id: number, { name }: CreateAuthorInput) {
-    const findAuthors = await this.authorsRepository.findOne({ where: { id } });
+    const findAuthor = await this.authorsRepository.findOne({ where: { id } });
 
-    if (!findAuthors) {
+    if (!findAuthor) {
       throw new NotFoundException('Author not found');
     }
 
@@ -66,14 +66,23 @@ export class AuthorsService {
   }
 
   async remove(id: number) {
-    const findAuthors = await this.authorsRepository.findOne({ where: { id } });
+    const findAuthor = await this.authorsRepository.findOne({ where: { id } });
 
-    if (!findAuthors) {
+    if (!findAuthor) {
       throw new NotFoundException('Author not found');
     }
 
     const deleteAuthor = await this.authorsRepository.delete({ id });
 
     return deleteAuthor;
+  }
+
+  async softDelete(id: number): Promise<AuthorEntity> {
+    const author = await this.authorsRepository.findOne({ where: { id } });
+    if (!author) {
+      throw new NotFoundException('Author not found');
+    }
+    author.deletedAt = new Date(); // Marcar o autor como "excluído"
+    return await this.authorsRepository.save(author);
   }
 }

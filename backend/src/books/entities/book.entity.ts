@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   ManyToOne,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'books' })
@@ -37,6 +38,9 @@ export class BookEntity {
     type: 'longtext',
   })
   image: string;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date; // Campo para soft delete
 
   @JoinColumn({ name: 'category_id' })
   @ManyToOne(() => CategoryEntity)

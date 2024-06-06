@@ -3,6 +3,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { BooksService } from 'src/books/books.service';
 import { BookType } from '../type/book.type';
 import { CreateBookInput } from '../input/book.input';
+import { SoftDeleteBookInput } from '../input/softDeleteBook.input';
 
 @Resolver('Book')
 export class BookResolver {
@@ -38,5 +39,10 @@ export class BookResolver {
   @Mutation(() => BookType)
   async removeBook(@Args('id') id: number) {
     return this.booksService.remove(+id);
+  }
+
+  @Mutation(() => BookType)
+  async softDeleteBook(@Args('id') id: number) {
+    return this.booksService.softDelete(id);
   }
 }

@@ -52,11 +52,11 @@ export default function EditRent() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      if (rent.returns_date < renewed) {
-        return notifyFail(
-          "New return date cannot be earlier than the original return date"
-        );
-      }
+      // if (rent.returns_date < renewed) {
+      //   return notifyFail(
+      //     "New return date cannot be earlier than the original return date"
+      //   );
+      // }
 
       await updateRents(id, rent, renewed);
       notifySuccess();

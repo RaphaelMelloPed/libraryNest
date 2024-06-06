@@ -65,9 +65,11 @@ type Mutation {
   createBook(data: CreateBookInput!): BookType!
   updateBook(id: Float!, input: CreateBookInput!): BookType!
   removeBook(id: Float!): BookType!
+  softDeleteBook(id: Float!): BookType!
   createAuthor(data: CreateAuthorInput!): AuthorType!
   updateAuthor(id: Int!, author: CreateAuthorInput!): AuthorType!
   removeAuthor(id: Int!): AuthorType!
+  softDeleteAuthor(input: SoftDeleteAuthorInput!): AuthorType!
   createCategory(data: CreateCategoryInput!): CategoryType!
   updateCategory(id: Int!, category: CreateCategoryInput!): CategoryType!
   removeCategory(id: Int!): CategoryType!
@@ -99,6 +101,10 @@ input CreateBookInput {
 
 input CreateAuthorInput {
   name: String!
+}
+
+input SoftDeleteAuthorInput {
+  id: Float!
 }
 
 input CreateCategoryInput {
