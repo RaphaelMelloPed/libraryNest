@@ -70,7 +70,7 @@ export class BooksService {
 
   async findOne(id: number) {
     const book = await this.bookRepository.findOne({
-      where: { id, deletedAt: null }, // Exclui livros marcados como "excluídos"
+      where: { id, deletedAt: null },
       relations: ['category', 'author'],
     });
 
