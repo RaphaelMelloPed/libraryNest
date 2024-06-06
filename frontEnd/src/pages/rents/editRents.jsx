@@ -35,10 +35,10 @@ export default function EditRent() {
     const fetchRent = async () => {
       try {
         const response = await findRents(id);
-        const rentData = response[0];
+        const rentData = response;
         setRent(rentData);
         setrenewed(rentData.returns_date);
-        if (response.length > 0) {
+        if (response) {
           const bookResponse = await findBooks(rentData.book.id);
           setBook(bookResponse ?? {});
         }

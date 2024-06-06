@@ -68,10 +68,10 @@ export default function allRentsAdmin() {
     fetchBooks();
   }, []);
 
-  function formatDateTime(dateTimeString) {
-    const datePart = dateTimeString.split("T")[0];
-    return datePart.split("-").reverse().join("-");
-  }
+  // function formatDateTime(dateTimeString) {
+  //   const datePart = dateTimeString.split("T")[0];
+  //   return datePart.split("-").reverse().join("-");
+  // }
 
   const indexOfLastRent = currentPage * 5;
   const indexOfFirstRent = indexOfLastRent - 5;
@@ -100,8 +100,8 @@ export default function allRentsAdmin() {
                     {currentRents.map((rent) => (
                       <RentsList
                         key={rent.id}
-                        pick_up_date={formatDateTime(rent.pick_up_date)}
-                        returns_date={formatDateTime(rent.returns_date)}
+                        pick_up_date={rent.pick_up_date}
+                        returns_date={rent.returns_date}
                         user_id={
                           user.find((user) => user.id === rent.user.id)
                             ?.name || "N/A"

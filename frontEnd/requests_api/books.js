@@ -35,8 +35,8 @@ export const viewBooks = async () => {
 
 export const findBooks = async (id) => {
   const query = `
-    query ($id: ID!) {
-      book(id: $id) {
+    {
+      book(id: ${id}) {
         id
         name
         quantity
@@ -163,8 +163,8 @@ export const updateBook = async (id, formData) => {
 
 export const deleteBooks = async (id) => {
   const mutation = `
-    mutation ($id: ID!) {
-      removeBook(id: $id) {
+    mutation {
+      removeBook(id: ${id}) {
         id
         name
       }

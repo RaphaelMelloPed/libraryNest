@@ -107,6 +107,8 @@ export const loginUser = async (formData) => {
           id
           email
           name
+          image
+          admin
         }
       }
     }
@@ -121,6 +123,8 @@ export const loginUser = async (formData) => {
     if (response.data.errors) {
       throw new Error(response.data.errors.map(error => error.message).join(', '));
     }
+
+    console.log(response)
 
     return response.data.data.login;
   } catch (error) {
