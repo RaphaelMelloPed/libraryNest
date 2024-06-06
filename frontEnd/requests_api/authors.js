@@ -54,14 +54,17 @@ export const findAuthor = async (id) => {
 };
 
 export const newAuthor = async (name) => {
+  console.log(name)
   const mutation = `
-    mutation ($name: String!) {
-      createAuthor(data: { name: $name }) {
-        id
-        name
-      }
+  mutation {
+    createAuthor(data: { name: "${name}" }) {
+      id
+      name
     }
+  }
   `;
+
+  console.log(mutation)
 
   try {
     const response = await fetchApi.post("/graphql", {

@@ -23,6 +23,8 @@ export default function modal() {
     });
   };
 
+  const name = formData.name
+
   const handleCloseModalAndNavigate = () => {
     onCloseModal();
   };
@@ -32,7 +34,7 @@ export default function modal() {
 
     try {
       setIsSubmitting(true);
-      await newAuthor(formData);
+      await newAuthor(name);
 
       notifySuccess();
     } catch (error) {
