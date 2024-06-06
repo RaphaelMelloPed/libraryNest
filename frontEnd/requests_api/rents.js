@@ -118,25 +118,24 @@ export const newRents = async (pick_up_date, returns_date, user_id, book_id) => 
   }
 };
 
-export const updateRents = async (id, rents, renewed) => {
+export const updateRents = async (id, updatedPick, updatedRent) => {
   const mutation = `
-    {
-      updateRent(id: ${id}, args: ${input}) {
-        id
-        pick_up_date
-        returns_date
-        book { 
-          id
-          name
-        }
-        user { id }
-      }
+  mutation {
+    updateRent(id: ${id}, input: {
+      pick_up_date: "${updatedPick}",
+      returns_date: "${updatedRent}"
+    }) {
+      id
+      pick_up_date
+      returns_date
+      book { id }
+      user { id }
     }
+  }
   `;
 
   const variables = {
     id,
-    input: { ...rents, renewed }
   };
 
   try {
@@ -163,11 +162,11 @@ export const updateRents = async (id, rents, renewed) => {
 
 export const deleteRents = async (id) => {
   const mutation = `
-    mutation($id: Number!) {
-      removeRent(id: $id) {
-        id
-      }
+  mutation{
+    removeRent(id:${id}){
+      id
     }
+  }
   `;
 
   const variables = { id };

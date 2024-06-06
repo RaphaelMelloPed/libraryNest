@@ -9,7 +9,7 @@ export default function EditRent() {
 
   const [book, setBook] = useState({ name: "" });
   const [rent, setRent] = useState({ returns_date: "" });
-  const [nextWeek, setNextWeek] = useState({new_date: ""})
+  const [nextWeek, setNextWeek] = useState({new_date: "", today_date: ""})
   const [userData, setUserData] = useState("");
   const userDataFromStorage = localStorage.getItem("user");
   const parsedUserData = JSON.parse(userDataFromStorage);
@@ -24,11 +24,11 @@ export default function EditRent() {
 
   useEffect(() => {
     const today = new Date();
-    const nextWeek = new Date(today);
-    nextWeek.setDate(nextWeek.getDate() + 7);
+    const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-    const formattedDate = nextWeek.toISOString().slice(0, 10);
-    setNextWeek({ new_date: formattedDate });
+    const formattedDateToday = today.toISOString().split('T')[0];
+    const formattedDate = nextWeek.toISOString().split('T')[0];
+    setNextWeek({ new_date: formattedDate, today_date: formattedDateToday});
   }, []);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function EditRent() {
         const response = await findRents(id);
         const rentData = response;
         setRent(rentData);
-        setrenewed(rentData.returns_date);
+        setrenewed(nextWeek);
         if (response) {
           const bookResponse = await findBooks(rentData.book.id);
           setBook(bookResponse ?? {});
@@ -52,13 +52,9 @@ export default function EditRent() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // if (rent.returns_date < renewed) {
-      //   return notifyFail(
-      //     "New return date cannot be earlier than the original return date"
-      //   );
-      // }
-
-      await updateRents(id, rent, renewed);
+      const updatedRent = nextWeek.new_date
+      const updatedPick = nextWeek.today_date
+      await updateRents(id, updatedPick, updatedRent);
       notifySuccess();
     } catch (error) {
       notifyFail(error.response.data.message);
