@@ -29,28 +29,40 @@ export class CategoriesService {
   
 
   async findAll() {
-    const allCategories = await this.categoryRepository.find()
+    const allCategories = await this.categoryRepository.find({
+      where: {
+        deletedAt: null
+      }
+    });
     return allCategories;
   }
 
   async findOne(id: number) {
-    const existingCategories = await this.existing(id)
+    const existingCategory = await this.categoryRepository.findOne({ 
+      where: { 
+        id,
+        deletedAt: null // Garante que a categoria não está deletada
+      } 
+    });
 
-    if (!existingCategories) {
-      throw new NotFoundException(`Categorie with ID ${id} not found`);
+    if (!existingCategory) {
+      throw new NotFoundException(`Category with ID ${id} not found`);
     }
 
-
-    const oneCategory = await this.categoryRepository.findOne({ where: { id } })
-    return oneCategory;
+    return existingCategory;
   }
 
   async update(id: number, { name }: CreateCategoryInput) {
 
-    const existingCategories = await this.existing(id)
+    const existingCategory = await this.categoryRepository.findOne({ 
+      where: { 
+        id,
+        deletedAt: null // Garante que a categoria não está deletada
+      } 
+    });
 
-    if (!existingCategories) {
-      throw new NotFoundException(`Categorie with ID ${id} not found`);
+    if (!existingCategory) {
+      throw new NotFoundException(`Category with ID ${id} not found`);
     }
 
     await this.categoryRepository.update(id, { name });
@@ -61,24 +73,31 @@ export class CategoriesService {
   }
 
   async remove(id: number) {
+    const findCategory = await this.categoryRepository.findOne({ where: { id } });
 
-    const existingCategories = await this.existing(id)
-
-    if (!existingCategories) {
-      throw new NotFoundException(`Categorie with ID ${id} not found`);
+    if (!findCategory) {
+      throw new NotFoundException('Category not found');
     }
 
-    const deleteCategory = await this.categoryRepository.delete({ id })
+    const deleteCategory = await this.categoryRepository.delete({ id });
 
     return deleteCategory;
   }
 
+  async softDelete(id: number) {
 
-  existing(id: number) {
-    return this.categoryRepository.findOne({
-      where: {
-        id
-      }
-    })
+    const existingCategory = await this.categoryRepository.findOne({ 
+      where: { 
+        id,
+        deletedAt: null
+      } 
+    });
+
+    if (!existingCategory) {
+      throw new NotFoundException(`Category with ID ${id} not found`);
+    }
+
+    existingCategory.deletedAt = new Date(); // Marca a categoria como deletada
+    return await this.categoryRepository.save(existingCategory);
   }
 }

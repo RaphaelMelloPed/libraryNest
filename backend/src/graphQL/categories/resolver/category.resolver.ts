@@ -3,6 +3,7 @@ import { CategoriesService } from '../../../categories/categories.service';
 import { CategoryType } from '../type/category.type';
 import { CreateCategoryArgs } from '../args/category.args';
 import { CreateCategoryInput } from '../input/category.input';
+import { SoftDeleteCategoryInput } from '../input/softDeleteCategory.input';
 
 @Resolver(() => CategoryType)
 export class CategoriesResolver {
@@ -35,4 +36,10 @@ export class CategoriesResolver {
   async removeCategory(@Args('id', { type: () => Int }) id: number) {
     return this.categoriesService.remove(id);
   }
+
+  @Mutation(() => CategoryType)
+  async softDeleteCategory(@Args('input') input: SoftDeleteCategoryInput): Promise<CategoryType> {
+    return this.categoriesService.softDelete(input.id);
+  }
+  
 }

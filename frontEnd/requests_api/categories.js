@@ -94,12 +94,12 @@ export const updateCategories = async (id, formData) => {
 
 export const deleteCategories = async (id) => {
   const mutation = `
-    {
-      removeCategory(id: ${id}) {
-        id
-        name
-      }
+  mutation {
+    softDeleteCategory(input: { id: ${id} }) {
+      id
+      name
     }
+  }
   `;
 
   try {
@@ -107,7 +107,7 @@ export const deleteCategories = async (id) => {
       query: mutation,
       variables: { id },
     });
-    return response.data.data.removeCategory;
+    return response.data.data.softDeleteCategory;
   } catch (error) {
     console.error("Error in deleteCategory:", error);
     throw error;

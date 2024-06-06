@@ -73,6 +73,7 @@ type Mutation {
   createCategory(data: CreateCategoryInput!): CategoryType!
   updateCategory(id: Int!, category: CreateCategoryInput!): CategoryType!
   removeCategory(id: Int!): CategoryType!
+  softDeleteCategory(input: SoftDeleteCategoryInput!): CategoryType!
   createRent(data: CreateRentInput!): RentType!
   updateRent(id: Float!, input: CreateRentInput!): RentType!
   removeRent(id: Float!): RentType!
@@ -109,6 +110,10 @@ input SoftDeleteAuthorInput {
 
 input CreateCategoryInput {
   name: String!
+}
+
+input SoftDeleteCategoryInput {
+  id: Int!
 }
 
 input CreateRentInput {
