@@ -63,7 +63,13 @@ const Register = () => {
         formDataObject.append("image", "");
       }
 
-      await newUsers(formDataObject);
+      const email = formDataObject.get("email");
+      const name = formDataObject.get("name");
+      const password = formDataObject.get("password");
+      const image = formDataObject.get("image");
+      console.log(email, name, password, image);
+
+      await newUsers(email, name, password, image);
 
       notifySuccess();
     } catch (error) {

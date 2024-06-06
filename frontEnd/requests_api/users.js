@@ -56,29 +56,27 @@ export const findUser = async (id) => {
   }
 };
 
-export const newUsers = async (formDataObject) => {
-  const { email, name, password, image } = formDataObject;
+export const newUsers = async (email, name, password, image) => {
   
   const mutation = `
-    mutation ($email: String!, $name: String!, $password: String!, $image: String!) {
-      createUser(data: {
-        email: $email
-        name: $name
-        password: $password
-        image: $image
-      }) {
-        id
-        email
-        name
-        image
-      }
+  mutation {
+    createUser(data: {
+      email: "${email}"
+      name: "${name}"
+      password: "${password}"
+      image: "${image}"
+    }) {
+      id
+      email
+      name
+      image
     }
+  }
   `;
 
   try {
     const response = await fetchApi.post('/graphql', {
       query: mutation,
-      variables: { email, name, password, image }
     });
     
     if (response.data.errors) {
