@@ -22,13 +22,10 @@ export default function EditCategory() {
     fetchCategories();
   }, [id]);
 
-  
-  console.log(id, formData)
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateCategories(id, formData);
+      await updateCategories(id, formData.name);
       notifySuccess();
     } catch (error) {
       console.error("Error calling API:", error.message);
@@ -38,8 +35,8 @@ export default function EditCategory() {
 
   const notifySuccess = () => {
     toast.success('Success!', {
-      position: "top-center",
-      autoClose: 3000,
+      position: "bottom-left",
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -52,8 +49,8 @@ export default function EditCategory() {
 
   const notifyFail = () => {
     toast.error('Something went wrong!', {
-      position: "top-center",
-      autoClose: 3000,
+      position: "bottom-left",
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

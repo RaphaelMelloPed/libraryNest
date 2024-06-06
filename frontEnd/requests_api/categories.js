@@ -62,22 +62,20 @@ export const newCategories = async (formData) => {
 };
 
 
-export const updateCategories = async (id, formData) => {
+export const updateCategories = async (id, name) => {
   const mutation = `
-    {
-      updateCategory(id: ${id}, input: { name: ${formData.name} }) {
+    mutation {
+      updateCategory(id: ${id}, category: { name: "${name}" }) {
         id
         name
       }
     }
   `;
-    console.log(mutation)
+
   try {
     const response = await fetchApi.post("/graphql", {
-      query: mutation,
-      variables: { id, formData },
+      query: mutation
     });
-    console.log(response, "response")
 
     if (response.data.errors) {
       throw new Error(
@@ -91,6 +89,7 @@ export const updateCategories = async (id, formData) => {
     throw error;
   }
 };
+
 
 export const deleteCategories = async (id) => {
   const mutation = `
