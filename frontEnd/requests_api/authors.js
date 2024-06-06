@@ -28,12 +28,12 @@ export const viewAuthors = async () => {
 
 export const findAuthor = async (id) => {
   const query = `
-    query ($id: ID!) {
-      author(id: $id) {
-        id
-        name
-      }
+  query {
+    author(id: ${id}) {
+      id
+      name
     }
+  }
   `;
 
   try {
@@ -86,19 +86,20 @@ export const newAuthor = async (name) => {
 };
 
 export const updateAuthor = async (id, name) => {
+  console.log(id, name)
   const mutation = `
-    mutation ($id: ID!, $name: String!) {
-      updateAuthor(id: $id, input: { name: $name }) {
-        id
-        name
-      }
+  mutation {
+    updateAuthor(id: ${id}, author: { name: "${name}" }) {
+      id
+      name
     }
+  }
   `;
 
   try {
     const response = await fetchApi.post("/graphql", {
       query: mutation,
-      variables: { id, name },
+      variables: { id, author: name },
     });
 
     if (response.data.errors) {

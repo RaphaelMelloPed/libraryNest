@@ -25,13 +25,15 @@ export default function EditAuthor() {
     e.preventDefault();
 
     try {
-      await updateAuthor(id, formData);
+      await updateAuthor(id, formData.name);
       notifySuccess();
     } catch (error) {
       console.error("Error calling API:", error.message);
       notifyFail(error.message);
     }
   };
+
+  console.log(formData)
 
   const notifySuccess = () => {
     toast.success("Success!", {
