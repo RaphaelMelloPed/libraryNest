@@ -81,7 +81,6 @@ export const newBook = async (
 ) => {
   console.log(name, quantity, description, image, author_id, category_id);
 
-  // console.log(name, quantity, image, description, category_id, author_id)
 
   const mutation = `
   mutation {
@@ -122,46 +121,35 @@ export const newBook = async (
   }
 };
 
-export const updateBook = async (id, formData) => {
-  const { name, quantity, image, description, categoryId, authorId } = formData;
+export const updateBook = async (id, name, quantity, description, image, author_id, category_id) => {
+
+    console.log(name, quantity, image, description, category_id, author_id)
+
 
   const mutation = `
-    mutation ($id: ID!, $name: String!, $quantity: Int!, $image: String!, $description: String!, $categoryId: ID!, $authorId: ID!) {
-      updateBook(id: $id, input: {
-        name: $name
-        quantity: $quantity
-        image: $image
-        description: $description
-        categoryId: $categoryId
-        authorId: $authorId
-      }) {
-        id
-        name
-        quantity
-        image
-        description
-        category {
-          name
-        }
-        author {
-          name
-        }
-      }
+  mutation {
+    updateBook(id: ${id}, input: { 
+      name: "${name}"
+      quantity: ${quantity}
+      image: "${image}"
+      description: "${description}"
+      category_id: ${category_id}
+      author_id: ${author_id}
+    }) {
+      id
+      name
+      quantity
+      image
+      description
+      category { name }
+      author { name }
     }
+  }
   `;
 
   try {
     const response = await fetchApi.post("/graphql", {
       query: mutation,
-      variables: {
-        id,
-        name,
-        quantity,
-        image,
-        description,
-        categoryId,
-        authorId,
-      },
     });
 
     if (response.data.errors) {

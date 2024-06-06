@@ -106,10 +106,21 @@ export default function EditBooks() {
       );
       formDataObject.append("description", formData.description);
       formDataObject.append("image", imageUrl[0]);
-      formDataObject.append("author", parseInt(formData.author.id));
-      formDataObject.append("category", parseInt(formData.category.id));
+      formDataObject.append("author", parseInt(formData.author_id));
+      formDataObject.append("category", parseInt(formData.category_id));
 
-      await updateBook(id, formDataObject);
+      const name = formDataObject.get('name');
+      const quantity = formDataObject.get('quantity');
+      const description = formDataObject.get('description');
+      const image = formDataObject.get('image');
+      const author_id = formDataObject.get('author');
+      const category_id = formDataObject.get('category');
+
+      console.log(category_id);
+      console.log(author_id);
+
+
+      await updateBook(id, name, quantity, description, image, author_id, category_id);
       notifySuccess();
     } catch (error) {
       notifyFail(error.message);
