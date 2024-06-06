@@ -61,16 +61,28 @@ export default function OneBook() {
     }
   }, []);
 
+  const today = new Date();
+  const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+
 
   const handleRent = async () => {
     try {
       const rentData = {
-      ...rent,
+        ...rent,
+        pick_up_date: today.toISOString().split('T')[0],
+        returns_date: nextWeek.toISOString().split('T')[0],
         book_id: parseInt(rent.book_id),
         user_id: parseInt(rent.user_id),
-      };
+      };            
   
-      await newRents(rentData);
+      const pick_up_date = rentData.pick_up_date
+      const returns_date = rentData.returns_date
+      const user_id = rentData.user_id
+      const book_id = rentData.book_id
+
+      console.log(pick_up_date, returns_date, user_id, book_id)
+
+      await newRents(pick_up_date, returns_date, user_id, book_id);
       notifySuccess()
     } catch (error) {
       notifyFail('Something went wrong!')

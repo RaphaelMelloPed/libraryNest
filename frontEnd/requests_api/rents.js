@@ -77,27 +77,27 @@ export const findRents = async (id) => {
 };
 
 
-export const newRents = async (rentData) => {
+export const newRents = async (pick_up_date, returns_date, user_id, book_id) => {
   const mutation = `
-    mutation(${input}: RentCreateInput!) {
-      createRent(data: ${input}) {
-        id
-        pick_up_date
-        returns_date
-        book { id }
-        user { id }
-      }
+  mutation {
+    createRent(data: {
+      pick_up_date: "${pick_up_date}",
+      returns_date: "${returns_date}"
+      user_id: ${user_id},
+      book_id: ${book_id}
+    }) {
+      id
+      pick_up_date
+      returns_date
+      book{id}
+      user{id}
     }
+  }
   `;
-
-  const variables = {
-    input: rentData
-  };
 
   try {
     const response = await fetchApi.post('/graphql', {
       query: mutation,
-      variables
     });
 
     if (response.data.errors) {
@@ -109,6 +109,8 @@ export const newRents = async (rentData) => {
       ...newRent,
       pick_up_date: newRent.pick_up_date,
       returns_date: newRent.returns_date,
+      user_id: newRent.user_id,
+      book_id: newRent.book_id,
     };
   } catch (error) {
     console.error("Error in newRents:", error);
@@ -119,7 +121,7 @@ export const newRents = async (rentData) => {
 export const updateRents = async (id, rents, renewed) => {
   const mutation = `
     {
-      updateRent(id: ${id}, input: ${input}) {
+      updateRent(id: ${id}, args: ${input}) {
         id
         pick_up_date
         returns_date
