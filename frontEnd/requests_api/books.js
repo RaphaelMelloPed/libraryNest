@@ -20,10 +20,12 @@ export const viewBooks = async () => {
   `;
 
   try {
-    const response = await fetchApi.post('/graphql', { query });
-    
+    const response = await fetchApi.post("/graphql", { query });
+
     if (response.data.errors) {
-      throw new Error(response.data.errors.map(error => error.message).join(', '));
+      throw new Error(
+        response.data.errors.map((error) => error.message).join(", ")
+      );
     }
 
     return response.data.data.books;
@@ -35,33 +37,29 @@ export const viewBooks = async () => {
 
 export const findBooks = async (id) => {
   const query = `
-    {
-mutation {
-  createBook(data: { 
-    name: "Livro graphql"
-    quantity: 10
-    image: "https://res.cloudinary.com/drgm0lmwz/image/upload/v1716914424/bnxpzejwfqliipgizv96.png"
-    description: "sbdhabshd sahbdashd bshdbahd sbdhashdbas"
-    category_id: 1
-    author_id: 2  	
-  }) {
-    id
-    name
-    quantity
-    image
-    description
-    category {name}
-    author {name}
-  }
-}
+      {
+        book(id: ${id}) {
+          id
+          name
+          quantity
+          image
+          description
+          category {
+            name
+          }
+          author {
+            name
+          }
+        }
+      }
   `;
 
   try {
-    const response = await fetchApi.post('/graphql', {
+    const response = await fetchApi.post("/graphql", {
       query,
-      variables: { id }
+      variables: { id },
     });
-    
+
     if (!response.data.data.book) {
       throw new Error("No book found for the given ID");
     }
@@ -73,9 +71,15 @@ mutation {
   }
 };
 
-export const newBook = async (name, quantity, description, image, author_id, category_id) => {
-
-  console.log(name, quantity, description, image, author_id, category_id)
+export const newBook = async (
+  name,
+  quantity,
+  description,
+  image,
+  author_id,
+  category_id
+) => {
+  console.log(name, quantity, description, image, author_id, category_id);
 
   // console.log(name, quantity, image, description, category_id, author_id)
 
@@ -101,12 +105,14 @@ export const newBook = async (name, quantity, description, image, author_id, cat
   `;
 
   try {
-    const response = await fetchApi.post('/graphql', {
-      query: mutation
+    const response = await fetchApi.post("/graphql", {
+      query: mutation,
     });
-    
+
     if (response.data.errors) {
-      throw new Error(response.data.errors.map(error => error.message).join(', '));
+      throw new Error(
+        response.data.errors.map((error) => error.message).join(", ")
+      );
     }
 
     return response.data.data.createBook;
@@ -116,10 +122,9 @@ export const newBook = async (name, quantity, description, image, author_id, cat
   }
 };
 
-
 export const updateBook = async (id, formData) => {
   const { name, quantity, image, description, categoryId, authorId } = formData;
-  
+
   const mutation = `
     mutation ($id: ID!, $name: String!, $quantity: Int!, $image: String!, $description: String!, $categoryId: ID!, $authorId: ID!) {
       updateBook(id: $id, input: {
@@ -146,13 +151,23 @@ export const updateBook = async (id, formData) => {
   `;
 
   try {
-    const response = await fetchApi.post('/graphql', {
+    const response = await fetchApi.post("/graphql", {
       query: mutation,
-      variables: { id, name, quantity, image, description, categoryId, authorId }
+      variables: {
+        id,
+        name,
+        quantity,
+        image,
+        description,
+        categoryId,
+        authorId,
+      },
     });
-    
+
     if (response.data.errors) {
-      throw new Error(response.data.errors.map(error => error.message).join(', '));
+      throw new Error(
+        response.data.errors.map((error) => error.message).join(", ")
+      );
     }
 
     return response.data.data.updateBook;
@@ -161,7 +176,6 @@ export const updateBook = async (id, formData) => {
     throw error;
   }
 };
-
 
 export const deleteBooks = async (id) => {
   const mutation = `
@@ -174,13 +188,15 @@ export const deleteBooks = async (id) => {
   `;
 
   try {
-    const response = await fetchApi.post('/graphql', {
+    const response = await fetchApi.post("/graphql", {
       query: mutation,
-      variables: { id }
+      variables: { id },
     });
-    
+
     if (response.data.errors) {
-      throw new Error(response.data.errors.map(error => error.message).join(', '));
+      throw new Error(
+        response.data.errors.map((error) => error.message).join(", ")
+      );
     }
 
     return response.data.data.removeBook;
@@ -189,4 +205,3 @@ export const deleteBooks = async (id) => {
     throw error;
   }
 };
-
