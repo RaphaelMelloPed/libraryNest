@@ -32,7 +32,7 @@ export default function modal() {
 
     try {
       setIsSubmitting(true);
-      await newCategories(formData);
+      await newCategories(formData.name);
 
       notifySuccess();
     } catch (error) {

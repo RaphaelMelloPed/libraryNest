@@ -40,14 +40,14 @@ export const findCategories = async (id) => {
   }
 };
 
-export const newCategories = async (id, formData) => {
+export const newCategories = async (formData) => {
   const query = `
-    mutation CreateCategory(${id}: Number!, ${formData}: String!) {
-      createCategory(data: { id: ${id}, name: ${formData} }) {
-        id
-        name
-      }
+  mutation {
+    createCategory(data: { name: "${formData}" }) {
+      id
+      name
     }
+  }
   `;
 
   const variables = { formData };
