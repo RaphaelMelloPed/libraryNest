@@ -36,20 +36,24 @@ export const viewBooks = async () => {
 export const findBooks = async (id) => {
   const query = `
     {
-      book(id: ${id}) {
-        id
-        name
-        quantity
-        image
-        description
-        category {
-          name
-        }
-        author {
-          name
-        }
-      }
-    }
+mutation {
+  createBook(data: { 
+    name: "Livro graphql"
+    quantity: 10
+    image: "https://res.cloudinary.com/drgm0lmwz/image/upload/v1716914424/bnxpzejwfqliipgizv96.png"
+    description: "sbdhabshd sahbdashd bshdbahd sbdhashdbas"
+    category_id: 1
+    author_id: 2  	
+  }) {
+    id
+    name
+    quantity
+    image
+    description
+    category {name}
+    author {name}
+  }
+}
   `;
 
   try {
@@ -69,39 +73,36 @@ export const findBooks = async (id) => {
   }
 };
 
-export const newBook = async (formData) => {
-  const { name, quantity, image, description, categoryId, authorId } = formData;
-  
+export const newBook = async (name, quantity, description, image, author_id, category_id) => {
+
+  console.log(name, quantity, description, image, author_id, category_id)
+
+  // console.log(name, quantity, image, description, category_id, author_id)
+
   const mutation = `
-    mutation ($name: String!, $quantity: Int!, $image: String!, $description: String!, $categoryId: ID!, $authorId: ID!) {
-      createBook(data: {
-        name: $name
-        quantity: $quantity
-        image: $image
-        description: $description
-        categoryId: $categoryId
-        authorId: $authorId
-      }) {
-        id
-        name
-        quantity
-        image
-        description
-        category {
-          name
-        }
-        author {
-          name
-        }
-        # Adicione outros campos que deseja retornar após a criação do livro
-      }
+  mutation {
+    createBook(data: { 
+      name: "${name}"
+      quantity: ${quantity}
+      image: "${image}"
+      description: "${description}"
+      category_id: ${category_id}
+      author_id: ${author_id}  	
+    }) {
+      id
+      name
+      quantity
+      image
+      description
+      category {name}
+      author {name}
     }
+  }
   `;
 
   try {
     const response = await fetchApi.post('/graphql', {
-      query: mutation,
-      variables: { name, quantity, image, description, categoryId, authorId }
+      query: mutation
     });
     
     if (response.data.errors) {
@@ -114,6 +115,7 @@ export const newBook = async (formData) => {
     throw error;
   }
 };
+
 
 export const updateBook = async (id, formData) => {
   const { name, quantity, image, description, categoryId, authorId } = formData;

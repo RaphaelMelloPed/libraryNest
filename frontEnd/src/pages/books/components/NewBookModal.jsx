@@ -103,7 +103,14 @@ export default function modal() {
         formDataObject.append('author_id', formData.author_id);
         formDataObject.append('category_id', formData.category_id);
 
-        await newBook(formDataObject);
+        const name = formDataObject.get('name');
+        const quantity = formDataObject.get('quantity');
+        const description = formDataObject.get('description');
+        const image = formDataObject.get('image');
+        const author_id = formDataObject.get('author_id');
+        const category_id = formDataObject.get('category_id');
+
+        await newBook(name, quantity, description, image, author_id, category_id);
 
         notifySuccess()
     } catch (error) {
