@@ -81,7 +81,6 @@ export const newBook = async (
 ) => {
   console.log(name, quantity, description, image, author_id, category_id);
 
-
   const mutation = `
   mutation {
     createBook(data: { 
@@ -121,10 +120,16 @@ export const newBook = async (
   }
 };
 
-export const updateBook = async (id, name, quantity, description, image, author_id, category_id) => {
-
-    console.log(name, quantity, image, description, category_id, author_id)
-
+export const updateBook = async (
+  id,
+  name,
+  quantity,
+  description,
+  image,
+  author_id,
+  category_id
+) => {
+  console.log(name, quantity, image, description, category_id, author_id);
 
   const mutation = `
   mutation {

@@ -14,7 +14,7 @@ export class ReviewEntity {
     rating: number;
 
     @Column({
-        type: "longtext"
+        type: "varchar"
     })
     comment: string;
 

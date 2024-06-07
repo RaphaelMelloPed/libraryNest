@@ -20,10 +20,15 @@ export default function NewReview() {
   );
   const [formData, setFormData] = useState({
     comment: "",
-    rating: "1",
-    user_id: isLoggedIn ? JSON.parse(localStorage.getItem("user")).user.id : null,
-    book_id: id,
+    rating: 1,
+    user_id: isLoggedIn ? Number(JSON.parse(localStorage.getItem("user")).user.id) : null,
+    book_id: Number(id),
   });
+
+  const comment = formData.comment.toString()
+  const rating = formData.rating
+  const user_id = formData.user_id
+  const book_id = formData.book_id
 
   const reloadPage = () => {
     window.location.reload();
@@ -39,7 +44,7 @@ export default function NewReview() {
   const handleRatingChange = (event, newValue) => {
     setFormData({
       ...formData,
-      rating: newValue.toString(),
+      rating: newValue,
     });
   };
 
@@ -48,7 +53,7 @@ export default function NewReview() {
     setIsSubmitting(true);
 
     try {
-      await newReviews(id, formData);
+      await newReviews(id, comment, rating, user_id, book_id);
     } catch (error) {
       console.error("Error calling API:", error.message);
     }
