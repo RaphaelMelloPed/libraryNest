@@ -73,10 +73,31 @@ export const newReviews = async (id, comment, rating, user_id, book_id) => {
 };
 
 export const deleteReviews = async (id) => {
+  const mutation = `
+    mutation {
+      removeReview(id: ${id}) {
+        id
+        comment
+      }
+    }
+  `;
+
   try {
-    const response = await fetchApi.delete(`/reviews/${id}`);
-    return response.data;
+    const response = await fetchApi.post("/graphql", {
+      query: mutation,
+      variables: { id },
+    });
+
+    if (response.data.errors) {
+      throw new Error(
+        response.data.errors.map((error) => error.message).join(", ")
+      );
+    }
+
+    return response.data.data.removeReview;
   } catch (error) {
+    console.error("Error in deleteReviews:", error);
     throw error;
   }
 };
+
