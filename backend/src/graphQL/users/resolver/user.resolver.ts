@@ -1,6 +1,6 @@
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import {UsersService} from 'src/users/users.service'
+import { UsersService } from 'src/users/users.service'
 import { UserType } from '../type/user.type';
 import { CreateUserInput } from '../input/user.input';
 
@@ -25,8 +25,16 @@ export class UserResolver {
     async createUser(
         @Args('data') data: CreateUserInput,
     ) {
-        const user = await this.usersService.create({ ...data });
-        return user;
+        try {
+            const imageUrl = await this.cloudinaryService.uploadImage(data.image);
+    
+            const user = await this.usersService.create({ ...data, image: imageUrl });
+    
+            return user;
+        } catch (error) {
+            console.error('Error creating user:', error);
+            throw error;
+        }
     }
 
     @Mutation(() => UserType)

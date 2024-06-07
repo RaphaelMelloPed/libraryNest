@@ -24,8 +24,14 @@ export class BookResolver {
 
   @Mutation(() => BookType)
   async createBook(@Args('data') data: CreateBookInput) {
-    const book = await this.booksService.create({ ...data });
-    return book;
+    try {
+      const book = await this.booksService.create({ ...data });
+
+      return book;
+    } catch (error) {
+      console.error('Error creating book:', error);
+      throw error;
+    }
   }
 
   @Mutation(() => BookType)

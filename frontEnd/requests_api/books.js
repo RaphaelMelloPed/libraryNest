@@ -79,7 +79,7 @@ export const newBook = async (
   author_id,
   category_id
 ) => {
-  console.log(name, quantity, description, image, author_id, category_id);
+  console.log(image, "imagem")
 
   const mutation = `
   mutation {
@@ -102,17 +102,21 @@ export const newBook = async (
   }
   `;
 
+  console.log(mutation)
+
   try {
     const response = await fetchApi.post("/graphql", {
       query: mutation,
     });
+    console.log(response)
 
     if (response.data.errors) {
       throw new Error(
+        console.log("DEU ERRO AQUI Ó"),
         response.data.errors.map((error) => error.message).join(", ")
       );
     }
-
+    console.log(response.data.data.createBook)
     return response.data.data.createBook;
   } catch (error) {
     console.error("Error in newBook:", error);

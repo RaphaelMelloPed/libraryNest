@@ -16,12 +16,6 @@ export class CloudinaryService {
   }
 
   async uploadImage(image: any): Promise<string> {
-    if (!image || !image.buffer) {
-      
-
-      return image = process.env.DEFAULT_USER_IMAGE
-    }
-
     const imageBase64 = image.buffer.toString('base64'); 
     const result = await cloudinary.uploader.upload(`data:${image.mimetype};base64,${imageBase64}`); 
 
