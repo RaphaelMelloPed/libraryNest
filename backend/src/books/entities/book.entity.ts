@@ -40,8 +40,7 @@ export class BookEntity {
   image: string;
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date; // Campo para soft delete
-
+  deletedAt: Date;
   @JoinColumn({ name: 'category_id' })
   @ManyToOne(() => CategoryEntity)
   category: CategoryEntity;

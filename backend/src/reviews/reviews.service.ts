@@ -1,5 +1,5 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { ReviewEntity } from './entities/review.entity'; // Importe a entidade correta
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ReviewEntity } from './entities/review.entity'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BooksService } from '../books/books.service';
@@ -11,60 +11,85 @@ export class ReviewsService {
   constructor(
     @InjectRepository(ReviewEntity)
     private reviewsRepository: Repository<ReviewEntity>,
-    private readonly bookService: BooksService,
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
+    private readonly booksService: BooksService,
   ) {}
 
   async create({ book_id, rating, user_id, comment }: CreateReviewInput) {
-    await this.userService.findOne(user_id);
-    await this.bookService.findOne(book_id);
-
-    const existingReview = await this.reviewsRepository.findOne({
-      where: { book: { id: book_id }, user: { id: user_id } },
-    });
-
-    if (existingReview) {
-      throw new BadRequestException('This review already exists');
+    const user = await this.usersService.findOne(user_id);
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
 
-    const newReview = this.reviewsRepository.create({
-      rating,
-      comment,
-      book: { id: book_id },
-      user: { id: user_id },
-    });
+    const book = await this.booksService.findOne(book_id);
+    if (!book) {
+      throw new NotFoundException('Book not found');
+    }
+
+    const newReview = new ReviewEntity();
+    newReview.rating = rating;
+    newReview.comment = comment;
+    newReview.book = book;
+    newReview.user = user;
 
     return await this.reviewsRepository.save(newReview);
   }
 
   async findAll() {
-    const allReviews = await this.reviewsRepository.find({
+    return await this.reviewsRepository.find({
+      where: { deletedAt: null }, // Alteração aqui
       relations: ['book', 'user'],
     });
-    return allReviews;
   }
 
   async findOne(id: number) {
     const review = await this.reviewsRepository.findOne({
-      where: { id },
+      where: { id, deletedAt: null },
       relations: ['book', 'user'],
     });
-  
+
     if (!review) {
       throw new NotFoundException('Review not found');
     }
-  
+
+    return review;
+  }
+
+  async update(id, data: CreateReviewInput) {
+    const review = await this.reviewsRepository.findOne(id);
+
+    if (!review) {
+      throw new NotFoundException('Review not found');
+    }
+
+    Object.assign(review, data);
+    await this.reviewsRepository.save(review);
+
     return review;
   }
 
   async remove(id) {
-    const existingReview = await this.reviewsRepository.findOne(id);
-    
-    if (!existingReview) {
-      throw new NotFoundException(`Review not found`);
+    const deleteResult = await this.reviewsRepository.delete(id);
+
+    if (deleteResult.affected === 0) {
+      throw new NotFoundException('Review not found');
     }
-    
-    await this.reviewsRepository.remove(existingReview);
-    
+
     return { message: 'Review successfully deleted' };
-  }}
+  }
+
+  async softDelete(id) {
+    const review = await this.reviewsRepository.findOne({
+      where: { id, deletedAt: null },
+    });
+
+    if (!review) {
+      throw new NotFoundException('Review not found');
+    }
+
+    review.deletedAt = new Date();
+    await this.reviewsRepository.save(review);
+
+    return review;
+  }
+}

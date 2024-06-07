@@ -17,5 +17,5 @@ export class ReviewType {
   user: UserType;
 
   @Field(() => BookType)
-  author: BookType;
+  book: BookType;
 }

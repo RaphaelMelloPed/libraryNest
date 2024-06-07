@@ -44,6 +44,14 @@ type RentType {
   book: BookType!
 }
 
+type ReviewType {
+  id: ID!
+  rating: Float!
+  comment: String!
+  user: UserType!
+  book: BookType!
+}
+
 type Query {
   users: [UserType!]!
   user(id: Float!): UserType!
@@ -55,6 +63,8 @@ type Query {
   category(id: Int!): CategoryType!
   rents: [RentType!]!
   rent(id: Float!): RentType!
+  reviews: [ReviewType!]!
+  review(id: Float!): ReviewType!
 }
 
 type Mutation {
@@ -77,6 +87,10 @@ type Mutation {
   createRent(data: CreateRentInput!): RentType!
   updateRent(id: Float!, input: CreateRentInput!): RentType!
   removeRent(id: Float!): RentType!
+  createReview(data: CreateReviewInput!): ReviewType!
+  updatereview(id: Float!, input: CreateReviewInput!): ReviewType!
+  removeReview(id: Float!): ReviewType!
+  softDeleteReview(id: Float!): ReviewType!
 }
 
 input AuthLoginDTO {
@@ -121,4 +135,11 @@ input CreateRentInput {
   returns_date: String!
   user_id: Float
   book_id: Float
+}
+
+input CreateReviewInput {
+  rating: Float!
+  comment: String!
+  user_id: Float!
+  book_id: Float!
 }

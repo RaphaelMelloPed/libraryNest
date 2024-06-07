@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, DeleteDateColumn } from "typeorm";
 import { UserEntity } from "../../users/entities/user.entity";
 import { BookEntity } from "../../books/entities/book.entity";
 
@@ -25,4 +25,7 @@ export class ReviewEntity {
     @ManyToOne(() => BookEntity, { onDelete: 'CASCADE', nullable: false })
     @JoinColumn({ name: 'book_id' })
     book: BookEntity;
+
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deletedAt: Date;
 }

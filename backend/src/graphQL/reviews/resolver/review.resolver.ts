@@ -22,8 +22,8 @@ export class ReviewResolver {
 
   @Mutation(() => ReviewType)
   async createReview(@Args('data') data: CreateReviewInput) {
-    const book = await this.ReviewsService.create({ ...data });
-    return book;
+    const review = await this.ReviewsService.create({ ...data });
+    return review; // Alteração aqui
   }
 
   @Mutation(() => ReviewType)
@@ -35,12 +35,13 @@ export class ReviewResolver {
   }
 
   @Mutation(() => ReviewType)
-  async removeBook(@Args('id') id: number) {
+  async removeReview(@Args('id') id: number) {
     return this.ReviewsService.remove(+id);
   }
 
   @Mutation(() => ReviewType)
-  async softDeleteBook(@Args('id') id: number) {
-    return this.ReviewsService.softDelete(id);
+  async softDeleteReview(@Args('id') id: number) {
+    const deletedReview = await this.ReviewsService.softDelete(id);
+    return deletedReview; // Alteração aqui
   }
 }
