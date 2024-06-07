@@ -26,9 +26,7 @@ export class UserResolver {
         @Args('data') data: CreateUserInput,
     ) {
         try {
-            const imageUrl = await this.cloudinaryService.uploadImage(data.image);
-    
-            const user = await this.usersService.create({ ...data, image: imageUrl });
+            const user = await this.usersService.create({ ...data });
     
             return user;
         } catch (error) {

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import { newUsers } from "../../../requests_api/users";
 import Visibility from "@mui/icons-material/Visibility";
+import { imageForUrl } from "../../../requests_api/image"
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Register = () => {
@@ -32,8 +33,9 @@ const Register = () => {
     event.preventDefault();
   };
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
       setImageUrl(file);
     }
@@ -49,6 +51,13 @@ const Register = () => {
 
     try {
       setIsSubmitting(true);
+
+      console.log(imageUrl);
+      console.log(typeof imageUrl)
+
+      const imageRoute = await imageForUrl(imageUrl);
+      console.log(imageRoute, "img route");
+
       const formDataObject = new FormData();
       formDataObject.append("email", formData.email);
       formDataObject.append("name", formData.name);
@@ -66,7 +75,7 @@ const Register = () => {
       const email = formDataObject.get("email");
       const name = formDataObject.get("name");
       const password = formDataObject.get("password");
-      const image = formDataObject.get("image");
+      const image = imageRoute;
       console.log(email, name, password, image);
 
       await newUsers(email, name, password, image);
